@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NINJA GAMES | 動力なし、己の力だけで魅せる現代の忍者</title>
+<meta name="description" content="NINJA GAMES — Trials / Parkour / Slackline / Scooter / Skateboard が交わる、ストリートスポーツショーケースイベント。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Russo+One&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#090909;
+    --card:#161616;
+    --gold:#E8B84B;
+    --red:#B8261E;
+    --text:#F2F2F2;
+    --muted:#888888;
+    --border:rgba(232,184,75,0.15);
+    --ease:cubic-bezier(.16,.84,.44,1);
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{
+    scroll-behavior:smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter','Noto Sans JP',sans-serif;
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+
+  body.lock{ overflow:hidden; height:100vh; }
+
+  h1,h2,h3,.display{
+    font-family:'Bebas Neue','Noto Sans JP',sans-serif;
+    letter-spacing:0.02em;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  img{ max-width:100%; display:block; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+  input,textarea{ font-family:inherit; }
+
+  .container{
+    max-width:1280px;
+    margin:0 auto;
+    padding:0 clamp(24px,5vw,64px);
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Inter',sans-serif;
+    font-size:0.75rem;
+    font-weight:700;
+    letter-spacing:0.25em;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:28px;
+    height:2px;
+    background:var(--gold);
+    display:inline-block;
+  }
+
+  /* ===================== INTRO ===================== */
+  .intro{
+    position:fixed;
+    inset:0;
+    background:#000;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:opacity 1s var(--ease), visibility 1s var(--ease);
+  }
+  .intro.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .intro-logo{
+    width:clamp(200px,30vw,360px);
+    max-width:60vw;
+    height:auto;
+    opacity:0;
+    transform:translateY(10px) scale(0.96);
+    transition:opacity 2.6s ease-out, transform 2.6s ease-out;
+  }
+  .intro-logo.show{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+
+  /* ===================== NAVBAR ===================== */
+  .navbar{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:500;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px clamp(24px,5vw,64px);
+    background:transparent;
+    transition:background .4s var(--ease), padding .4s var(--ease), border-color .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  .navbar.scrolled{
+    background:rgba(9,9,9,0.95);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    padding:14px clamp(24px,5vw,64px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-logo{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.5rem;
+    letter-spacing:0.1em;
+    color:var(--text);
+    z-index:501;
+  }
+  .nav-logo span{ color:var(--gold); }
+
+  .nav-links{
+    display:flex;
+    gap:clamp(24px,3vw,48px);
+    align-items:center;
+  }
+  .nav-links a{
+    font-size:0.85rem;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--text);
+    position:relative;
+    padding:6px 0;
+    transition:color .3s var(--ease);
+  }
+  .nav-links a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:0;
+    width:0;
+    height:2px;
+    background:var(--gold);
+    transition:width .3s var(--ease);
+  }
+  .nav-links a:hover,
+  .nav-links a.active{
+    color:var(--gold);
+  }
+  .nav-links a.active::after{ width:100%; }
+
+  .nav-toggle{
+    display:none;
+    z-index:501;
+    width:32px;
+    height:24px;
+    position:relative;
+  }
+  .nav-toggle span{
+    position:absolute;
+    left:0; right:0;
+    height:2px;
+    background:var(--text);
+    transition:transform .3s var(--ease), opacity .3s var(--ease), top .3s var(--ease);
+  }
+  .nav-toggle span:nth-child(1){ top:0; }
+  .nav-toggle span:nth-child(2){ top:11px; }
+  .nav-toggle span:nth-child(3){ top:22px; }
+  .nav-toggle.open span:nth-child(1){ top:11px; transform:rotate(45deg); }
+  .nav-toggle.open span:nth-child(2){ opacity:0; }
+  .nav-toggle.open span:nth-child(3){ top:11px; transform:rotate(-45deg); }
+
+  /* ===================== HERO ===================== */
+  .hero{
+    position:relative;
+    width:100%;
+    height:100svh;
+    min-height:560px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+  }
+
+  .hero-media{
+    position:absolute;
+    inset:0;
+    z-index:0;
+  }
+  .hero-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  /* ---- vignette ---- */
+  .hero-vignette{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%);
+    pointer-events:none;
+  }
+
+  /* ---- film grain ---- */
+  .hero-grain{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    filter:url(#heroGrainFilter);
+    mix-blend-mode:overlay;
+    opacity:0.22;
+    pointer-events:none;
+  }
+
+  .hero-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.28);
+    z-index:3;
+  }
+
+  .hero-title{
+    position:absolute;
+    inset:0;
+    z-index:4;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    overflow:hidden;
+    user-select:none;
+  }
+  .hero-title svg{
+    display:block;
+    width:100%;
+    height:100%;
+  }
+  .hero-title-mobile{ visibility:hidden; }
+  #heroSvgTextDesktop,
+  #heroSvgTextNinja,
+  #heroSvgTextGames{
+    font-family:'Russo One',sans-serif;
+    text-transform:uppercase;
+    fill:none;
+    stroke:#fff;
+    stroke-opacity:0.7;
+    stroke-width:3px;
+  }
+
+  @media (max-width:767px){
+    .hero-title-desktop{ visibility:hidden; }
+    .hero-title-mobile{ visibility:visible; }
+  }
+
+  /* ===================== REVEAL ===================== */
+  .reveal{
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity .9s var(--ease), transform .9s var(--ease);
+  }
+  .reveal.in-view{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .reveal-delay-1{ transition-delay:.1s; }
+  .reveal-delay-2{ transition-delay:.2s; }
+  .reveal-delay-3{ transition-delay:.3s; }
+  .reveal-delay-4{ transition-delay:.4s; }
+
+  /* ===================== SECTION GENERIC ===================== */
+  section{
+    position:relative;
+    padding:clamp(80px,12vw,160px) 0;
+  }
+  .section-head{
+    max-width:720px;
+    margin-bottom:clamp(48px,6vw,80px);
+  }
+  .section-head h2{
+    font-size:clamp(2.5rem,6vw,4.5rem);
+    line-height:0.95;
+    color:var(--text);
+  }
+  .section-head p{
+    margin-top:18px;
+    color:var(--muted);
+    font-size:1rem;
+    max-width:560px;
+  }
+
+  /* ===================== ABOUT ===================== */
+  #about{ background:var(--bg); }
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:clamp(40px,6vw,80px);
+    align-items:start;
+  }
+  .about-copy p{
+    color:#cfcfcf;
+    font-size:1.05rem;
+    margin-bottom:20px;
+    max-width:540px;
+  }
+  .about-copy .lead{
+    font-size:1.3rem;
+    color:var(--text);
+    font-weight:700;
+    margin-bottom:28px;
+  }
+
+  .discipline-list{
+    margin-top:36px;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+  .discipline-item{
+    display:flex;
+    align-items:baseline;
+    gap:20px;
+    padding:18px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .discipline-item:first-child{ border-top:1px solid var(--border); }
+  .discipline-num{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.1rem;
+    color:var(--gold);
+    min-width:34px;
+  }
+  .discipline-name{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.3rem;
+    letter-spacing:0.05em;
+    min-width:150px;
+  }
+  .discipline-desc{
+    color:var(--muted);
+    font-size:0.9rem;
+  }
+
+  .stat-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+  }
+  .stat-card{
+    background:var(--card);
+    padding:clamp(28px,3vw,44px) clamp(20px,3vw,32px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height:180px;
+    transition:background .3s var(--ease);
+  }
+  .stat-card:hover{ background:#1d1d1d; }
+  .stat-num{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(2.2rem,3.5vw,3.2rem);
+    color:var(--gold);
+    line-height:1;
+  }
+  .stat-label{
+    margin-top:10px;
+    font-size:0.8rem;
+    letter-spacing:0.12em;
+    color:var(--muted);
+    text-transform:uppercase;
+  }
+
+  /* ===================== EVENTS ===================== */
+  #events{ background:linear-gradient(180deg,#090909, #0c0c0c); }
+  .events-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+  }
+  .event-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    padding:36px 30px 30px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    transition:border-color .35s var(--ease), transform .35s var(--ease), box-shadow .35s var(--ease);
+  }
+  .event-card:hover{
+    border-color:var(--gold);
+    transform:translateY(-4px);
+    box-shadow:0 20px 40px -20px rgba(232,184,75,0.25);
+  }
+  .event-tag{
+    align-self:flex-start;
+    font-size:0.7rem;
+    font-weight:700;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--red);
+    background:rgba(184,38,30,0.12);
+    border:1px solid rgba(184,38,30,0.4);
+    padding:5px 12px;
+  }
+  .event-card h3{
+    font-size:1.9rem;
+    letter-spacing:0.03em;
+  }
+  .event-desc{
+    color:var(--muted);
+    font-size:0.9rem;
+    flex-grow:1;
+  }
+  .event-meta{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-size:0.85rem;
+    color:#bdbdbd;
+    padding-top:12px;
+    border-top:1px solid var(--border);
+  }
+  .event-meta span b{ color:var(--text); font-weight:600; }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:13px 28px;
+    font-size:0.8rem;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    border:1px solid var(--gold);
+    color:var(--gold);
+    transition:background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+  }
+  .btn:hover{
+    background:var(--gold);
+    color:#090909;
+    transform:translateY(-2px);
+  }
+  .btn-block{ width:100%; margin-top:8px; }
+  .btn-solid{
+    background:var(--gold);
+    color:#090909;
+  }
+  .btn-solid:hover{
+    background:#f7cb6a;
+    color:#090909;
+  }
+
+  /* ===================== CONTACT ===================== */
+  #contact{ background:var(--bg); }
+  .contact-wrap{
+    display:grid;
+    grid-template-columns:0.8fr 1.2fr;
+    gap:clamp(40px,6vw,80px);
+  }
+  .contact-info p{
+    color:var(--muted);
+    margin-bottom:28px;
+    max-width:420px;
+  }
+  .contact-detail{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .contact-detail-item{
+    padding:16px 0;
+    border-top:1px solid var(--border);
+  }
+  .contact-detail-item:last-child{ border-bottom:1px solid var(--border); }
+  .contact-detail-item .label{
+    font-size:0.7rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:6px;
+  }
+
+  form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .field.full{ grid-column:1 / -1; }
+  .field label{
+    font-size:0.75rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .field input,
+  .field textarea{
+    background:#111;
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:14px 16px;
+    font-size:0.95rem;
+    transition:border-color .3s var(--ease), background .3s var(--ease);
+  }
+  .field textarea{
+    resize:vertical;
+    min-height:120px;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder{ color:#555; }
+  .field input:focus,
+  .field textarea:focus{
+    outline:none;
+    border-color:var(--gold);
+    background:#141414;
+  }
+
+  /* ===================== FOOTER ===================== */
+  footer{
+    border-top:1px solid var(--gold);
+    padding:56px 0 32px;
+    background:#050505;
+  }
+  .footer-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:40px;
+    flex-wrap:wrap;
+    padding-bottom:40px;
+    margin-bottom:32px;
+    border-bottom:1px solid var(--border);
+  }
+  .footer-logo{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:2rem;
+    color:var(--gold);
+    letter-spacing:0.08em;
+  }
+  .footer-tagline{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:0.85rem;
+    max-width:320px;
+  }
+  .footer-nav{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .footer-nav a{
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text);
+    transition:color .3s var(--ease);
+  }
+  .footer-nav a:hover{ color:var(--gold); }
+
+  .footer-social{
+    display:flex;
+    gap:16px;
+  }
+  .footer-social a{
+    width:40px;
+    height:40px;
+    border:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease);
+    color:var(--text);
+  }
+  .footer-social a:hover{
+    border-color:var(--gold);
+    color:var(--gold);
+    transform:translateY(-3px);
+  }
+  .footer-social svg{ width:18px; height:18px; fill:currentColor; }
+
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .footer-bottom p{
+    color:var(--muted);
+    font-size:0.8rem;
+  }
+  .footer-handle{
+    color:var(--muted);
+    font-size:0.8rem;
+  }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width:1024px){
+    .about-grid{ grid-template-columns:1fr; }
+    .events-grid{ grid-template-columns:1fr 1fr; }
+    .contact-wrap{ grid-template-columns:1fr; }
+  }
+
+  @media (max-width:768px){
+    .nav-links{
+      position:fixed;
+      top:0; right:0;
+      height:100vh;
+      width:min(78vw,320px);
+      background:rgba(9,9,9,0.98);
+      backdrop-filter:blur(10px);
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      padding:0 40px;
+      transform:translateX(100%);
+      transition:transform .4s var(--ease);
+      border-left:1px solid var(--border);
+    }
+    .nav-links.open{ transform:translateX(0); }
+    .nav-links a{ font-size:1.1rem; }
+    .nav-toggle{ display:block; }
+
+    .events-grid{ grid-template-columns:1fr; }
+    form{ grid-template-columns:1fr; }
+    .footer-top{ flex-direction:column; gap:28px; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; }
+  }
+
+  @media (max-width:480px){
+    .discipline-item{ flex-wrap:wrap; }
+    .discipline-desc{ width:100%; }
+  }
+
+  /* ===================== REDUCED MOTION ===================== */
+  @media (prefers-reduced-motion:reduce){
+    *{
+      animation-duration:0.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.001ms !important;
+      scroll-behavior:auto !important;
+    }
+    .reveal{ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body class="lock">
+
+  <!-- ============ INTRO ============ -->
+  <div class="intro" id="intro">
+    <img class="intro-logo" id="introLogo" src="assets/ninja-logo-cutout.png" alt="NINJA GAMES">
+  </div>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar" id="navbar">
+    <a href="#hero" class="nav-logo">NINJA <span>GAMES</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero" data-nav="hero">Home</a></li>
+      <li><a href="#about" data-nav="about">About</a></li>
+      <li><a href="#events" data-nav="events">Events</a></li>
+      <li><a href="#contact" data-nav="contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-media">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="image/ninja 動画/ninja-games-nologo-202405.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- ビネット -->
+    <div class="hero-vignette"></div>
+
+    <!-- フィルムグレイン -->
+    <svg style="position:absolute; width:0; height:0;">
+      <filter id="heroGrainFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" result="noise"/>
+        <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0"/>
+      </filter>
+    </svg>
+    <div class="hero-grain"></div>
+
+    <!-- 黒半透明オーバーレイ -->
+    <div class="hero-overlay"></div>
+
+    <!-- テキスト(デスクトップ: 1行) -->
+    <div class="hero-title hero-title-desktop" id="heroTitleDesktop">
+      <svg id="heroSvgDesktop" preserveAspectRatio="none">
+        <text
+          id="heroSvgTextDesktop"
+          x="0"
+          y="0"
+          textLength="0"
+          lengthAdjust="spacingAndGlyphs"
+          font-size="100"
+        >NINJA GAMES</text>
+      </svg>
+    </div>
+
+    <!-- テキスト(モバイル: 2行) -->
+    <div class="hero-title hero-title-mobile" id="heroTitleMobile">
+      <svg id="heroSvgMobile" preserveAspectRatio="none">
+        <text
+          id="heroSvgTextNinja"
+          x="0"
+          y="0"
+          textLength="0"
+          lengthAdjust="spacingAndGlyphs"
+          font-size="100"
+        >NINJA</text>
+        <text
+          id="heroSvgTextGames"
+          x="0"
+          y="0"
+          textLength="0"
+          lengthAdjust="spacingAndGlyphs"
+          font-size="100"
+        >GAMES</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <span class="eyebrow">What is Ninja Games</span>
+          <h2 class="section-head-h2" style="font-size:clamp(2.2rem,5vw,3.6rem);margin-bottom:24px;line-height:0.95;">
+            WHAT IS<br>NINJA GAMES
+          </h2>
+          <p class="lead">動力なし。機械なし。己の肉体だけで魅せる、現代の忍者たち。</p>
+          <p>NINJA GAMESは、動力なし・機械なしで開催されるストリートスポーツのショーケースイベントです。Trials・Parkour・Slackline・Scooter・Skateboardという異なる5つの種目が同じステージに立ち、モーターも装置も使わず、鍛え上げられた身体ひとつで観客を魅了します。</p>
+          <p>それぞれの種目が培ってきたスキルとスタイルが交差する瞬間、そこに立つのは競技者であると同時に、現代を生きる「忍者」です。</p>
+
+          <div class="discipline-list">
+            <div class="discipline-item">
+              <span class="discipline-num">01</span>
+              <span class="discipline-name">Trials</span>
+              <span class="discipline-desc">自転車で障害物を制する、バランスと瞬発力の競技</span>
+            </div>
+            <div class="discipline-item">
+              <span class="discipline-num">02</span>
+              <span class="discipline-name">Parkour</span>
+              <span class="discipline-desc">都市の構造物を駆け抜ける、移動そのものを表現する競技</span>
+            </div>
+            <div class="discipline-item">
+              <span class="discipline-num">03</span>
+              <span class="discipline-name">Slackline</span>
+              <span class="discipline-desc">一本の帯の上で魅せる、極限の集中力とバランス感覚</span>
+            </div>
+            <div class="discipline-item">
+              <span class="discipline-num">04</span>
+              <span class="discipline-name">Scooter</span>
+              <span class="discipline-desc">キックスクーターによる、スピードとトリックの応酬</span>
+            </div>
+            <div class="discipline-item">
+              <span class="discipline-num">05</span>
+              <span class="discipline-name">Skateboard</span>
+              <span class="discipline-desc">路面ひとつを舞台に変える、自由なスタイルの表現</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-grid reveal reveal-delay-2">
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Disciplines</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-label">Stage</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">Machines / Zero Power</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Human Power</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS ============ -->
+  <section id="events">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Events &amp; Info</span>
+        <h2>EVENTS &amp; EXPERIENCE</h2>
+        <p>ショーケースから体験会、大会まで。NINJA GAMESを楽しむ3つのカタチ。</p>
+      </div>
+
+      <div class="events-grid">
+        <div class="event-card reveal">
+          <span class="event-tag">ショーケース</span>
+          <h3>SHOWCASE</h3>
+          <p class="event-desc">国内トップクラスのプロパフォーマーたちが集結し、5種目それぞれの技術とスタイルを披露するメインコンテンツ。</p>
+          <div class="event-meta">
+            <span><b>日時：</b>TBD</span>
+            <span><b>会場：</b>TBD</span>
+          </div>
+          <a href="#contact" class="btn btn-block">詳細を見る</a>
+        </div>
+
+        <div class="event-card reveal reveal-delay-1">
+          <span class="event-tag">体験会</span>
+          <h3>EXPERIENCE</h3>
+          <p class="event-desc">一般参加者が各種目のインストラクターと共に、実際に道具に触れながら体験できるセッション。初心者・お子様も歓迎。</p>
+          <div class="event-meta">
+            <span><b>日時：</b>TBD</span>
+            <span><b>会場：</b>TBD</span>
+          </div>
+          <a href="#contact" class="btn btn-block">詳細を見る</a>
+        </div>
+
+        <div class="event-card reveal reveal-delay-2">
+          <span class="event-tag">大会</span>
+          <h3>COMPETITION</h3>
+          <p class="event-desc">競技形式で行われるコンテスト。ジャッジによる採点のもと、各種目のトップライダー・アスリートがしのぎを削る。</p>
+          <div class="event-meta">
+            <span><b>日時：</b>TBD</span>
+            <span><b>会場：</b>TBD</span>
+          </div>
+          <a href="#contact" class="btn btn-block">詳細を見る</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-info reveal">
+          <span class="eyebrow">Book Ninja Games</span>
+          <h2 style="font-size:clamp(2.2rem,5vw,3.4rem);margin-bottom:18px;">BOOK<br>NINJA GAMES</h2>
+          <p>イベントへの出演依頼・パフォーマンス依頼はこちらから。内容を確認の上、担当者よりご連絡いたします。</p>
+
+          <div class="contact-detail">
+            <div class="contact-detail-item">
+              <div class="label">Email</div>
+              <div>info@ninjagames.example.jp</div>
+            </div>
+          </div>
+        </div>
+
+        <form class="reveal reveal-delay-1" action="" method="post">
+          <div class="field">
+            <label for="name">お名前</label>
+            <input type="text" id="name" name="name" placeholder="山田 太郎" required>
+          </div>
+          <div class="field">
+            <label for="org">会社名・団体名</label>
+            <input type="text" id="org" name="org" placeholder="株式会社〇〇">
+          </div>
+          <div class="field">
+            <label for="email">メールアドレス</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="date">イベント予定日</label>
+            <input type="date" id="date" name="date">
+          </div>
+          <div class="field full">
+            <label for="place">開催場所</label>
+            <input type="text" id="place" name="place" placeholder="開催予定地・施設名など">
+          </div>
+          <div class="field full">
+            <label for="message">ご依頼内容</label>
+            <textarea id="message" name="message" placeholder="ご依頼内容・ご予算・イベント規模などをご記入ください"></textarea>
+          </div>
+          <div class="field full">
+            <button type="submit" class="btn btn-solid btn-block">SEND REQUEST</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">NINJA GAMES</div>
+          <p class="footer-tagline">動力なし・己の力だけで魅せる、現代の忍者たちのストリートスポーツショーケース。</p>
+        </div>
+        <ul class="footer-nav">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2.1.25 2.8.53a5.7 5.7 0 0 1 2.1 1.36 5.7 5.7 0 0 1 1.36 2.1c.28.7.47 1.6.53 2.8.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2.1-.53 2.8a5.7 5.7 0 0 1-1.36 2.1 5.7 5.7 0 0 1-2.1 1.36c-.7.28-1.6.47-2.8.53-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2.1-.25-2.8-.53a5.7 5.7 0 0 1-2.1-1.36 5.7 5.7 0 0 1-1.36-2.1c-.28-.7-.47-1.6-.53-2.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2.1.53-2.8a5.7 5.7 0 0 1 1.36-2.1A5.7 5.7 0 0 1 6.26 .84c.7-.28 1.6-.47 2.8-.53C10.4 2.2 10.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.51.01-4.75.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94C2.9 9.31 2.89 9.68 2.89 12s.01 2.69.07 3.93c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.61.07-3.93s-.01-2.69-.07-3.93c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36C15.51 4.01 15.14 4 12 4Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm4.6-2a1.03 1.03 0 1 1 0 2.06 1.03 1.03 0 0 1 0-2.06Z"/></svg>
+          </a>
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M13.5 21v-7.9h2.65l.4-3.08h-3.05V8.13c0-.89.25-1.5 1.52-1.5h1.63V3.9A21.8 21.8 0 0 0 14.3 3.8c-2.34 0-3.94 1.43-3.94 4.05v2.26H7.7v3.08h2.66V21h3.14Z"/></svg>
+          </a>
+          <a href="#" aria-label="X (旧Twitter)">
+            <svg viewBox="0 0 24 24"><path d="M3.5 3h4.3l4.1 5.6L16.6 3h3.2l-6 7.6L20.5 21h-4.3l-4.5-6.1L6.4 21H3.2l6.4-8.1L3.5 3Zm2.3 1.6 9.9 14.8h2l-9.9-14.8h-2Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 NINJA GAMES. All rights reserved.</p>
+        <p class="footer-handle">@ninjagames_official</p>
+      </div>
+    </div>
+  </footer>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- INTRO ---------- */
+  var intro = document.getElementById('intro');
+  var introLogo = document.getElementById('introLogo');
+  var body = document.body;
+
+  function startIntro(){
+    if(reduceMotion){
+      intro.classList.add('hide');
+      body.classList.remove('lock');
+      return;
+    }
+    requestAnimationFrame(function(){
+      introLogo.classList.add('show');
+    });
+    setTimeout(function(){
+      intro.classList.add('hide');
+      body.classList.remove('lock');
+    }, 4200);
+  }
+  window.addEventListener('load', startIntro);
+  setTimeout(startIntro, 5200); // フォールバック
+
+  /* ---------- HERO TITLE: SVG textLength で NINJA GAMES を画面いっぱいに(横幅×縦幅) ---------- */
+  // viewBoxは実画面サイズに連動させず、幅1000の固定座標系にする。
+  // 1) textLength=1000 + lengthAdjust="spacingAndGlyphs" で文字を横幅1000ぴったりに圧縮/伸長。
+  // 2) その状態でgetBBox()実測し、文字のインクがちょうど収まる高さをviewBoxの高さに採用、
+  //    ベースラインも補正してインクの上端がy=0に来るようにする(=viewBoxを文字ぴったりに)。
+  // 3) 最後に外側のsvgのpreserveAspectRatio="none"が、この固定比率のviewBoxを実際の
+  //    ヒーロー領域(100%×100%)へ非一様に引き伸ばす。スマホの縦長画面など、どんなアスペクト比
+  //    でも「幅1000→実測高さ」という穏当な圧縮率のまま常に画面いっぱいに収まる(resize時の
+  //    再計算も不要)。
+  var HERO_SVG_WIDTH = 1000;
+  var TEST_SIZE = 300;
+
+  // 1行版(デスクトップ)
+  var heroSvgDesktop = document.getElementById('heroSvgDesktop');
+  var heroSvgTextDesktop = document.getElementById('heroSvgTextDesktop');
+
+  function fitHeroSvgSingleLine(svg, textEl){
+    textEl.setAttribute('x', 0);
+    textEl.setAttribute('textLength', HERO_SVG_WIDTH);
+    textEl.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+    textEl.setAttribute('font-size', TEST_SIZE);
+    textEl.setAttribute('y', TEST_SIZE);
+    var bbox = textEl.getBBox();
+    if(bbox.height <= 0) return;
+
+    var shift = -bbox.y;
+    textEl.setAttribute('y', TEST_SIZE + shift);
+    svg.setAttribute('viewBox', '0 0 ' + HERO_SVG_WIDTH + ' ' + bbox.height);
+  }
+
+  // 2行版(モバイル: NINJA / GAMES)
+  var heroSvgMobile = document.getElementById('heroSvgMobile');
+  var heroSvgTextNinja = document.getElementById('heroSvgTextNinja');
+  var heroSvgTextGames = document.getElementById('heroSvgTextGames');
+  var HERO_LINE_GAP = 20;
+
+  function fitHeroSvgTwoLines(svg, textEls, gap){
+    var cursor = 0;
+    textEls.forEach(function(textEl){
+      textEl.setAttribute('x', 0);
+      textEl.setAttribute('textLength', HERO_SVG_WIDTH);
+      textEl.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      textEl.setAttribute('font-size', TEST_SIZE);
+      textEl.setAttribute('y', TEST_SIZE);
+      var bbox = textEl.getBBox();
+      if(bbox.height <= 0) return;
+
+      var shift = -bbox.y;
+      textEl.setAttribute('y', TEST_SIZE + shift + cursor);
+      cursor += bbox.height + gap;
+    });
+    var totalHeight = cursor - gap;
+    if(totalHeight <= 0) return;
+    svg.setAttribute('viewBox', '0 0 ' + HERO_SVG_WIDTH + ' ' + totalHeight);
+  }
+
+  function fitHeroText(){
+    fitHeroSvgSingleLine(heroSvgDesktop, heroSvgTextDesktop);
+    fitHeroSvgTwoLines(heroSvgMobile, [heroSvgTextNinja, heroSvgTextGames], HERO_LINE_GAP);
+  }
+  fitHeroText();
+  window.addEventListener('load', fitHeroText);
+  window.addEventListener('resize', fitHeroText);
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(fitHeroText);
+  }
+
+  /* ---------- NAVBAR SCROLL STATE ---------- */
+  var navbar = document.getElementById('navbar');
+  function onScroll(){
+    if(window.scrollY > 40){
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* ---------- MOBILE NAV TOGGLE ---------- */
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function(){
+    navToggle.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      navToggle.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+
+  /* ---------- ACTIVE NAV LINK (SCROLL SPY) ---------- */
+  var sections = document.querySelectorAll('section[id]');
+  var navItems = document.querySelectorAll('.nav-links a');
+  var spyObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.getAttribute('id');
+        navItems.forEach(function(link){
+          link.classList.toggle('active', link.dataset.nav === id);
+        });
+      }
+    });
+  }, { rootMargin:'-45% 0px -50% 0px', threshold:0 });
+  sections.forEach(function(sec){ spyObserver.observe(sec); });
+
+  /* ---------- SCROLL REVEAL ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if(reduceMotion){
+    revealEls.forEach(function(el){ el.classList.add('in-view'); });
+  } else {
+    var revealObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold:0.15 });
+    revealEls.forEach(function(el){ revealObserver.observe(el); });
+  }
+
+  /* ---------- CONTACT FORM (native, no backend) ---------- */
+  var form = document.querySelector('#contact form');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = form.querySelector('button[type="submit"]');
+    var original = btn.textContent;
+    btn.textContent = 'SENT ✓';
+    form.reset();
+    setTimeout(function(){ btn.textContent = original; }, 2500);
+  });
+})();
+</script>
+</body>
+</html>
