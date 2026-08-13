@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Anton&family=Russo+One&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after{ box-sizing:border-box; margin:0; padding:0; }
 
@@ -244,7 +244,7 @@
     .logo-marquee-track{ animation:none !important; }
   }
 
-  /* ===================== UPCOMING EVENTS ===================== */
+  /* ===================== UPCOMING SHOW CASE ===================== */
   .upcoming{
     background:#000;
     padding:clamp(56px, 9vw, 120px) clamp(24px, 5vw, 64px);
@@ -258,7 +258,7 @@
     column-gap:clamp(16px, 2.2vw, 36px);
     row-gap:clamp(14px, 1.6vw, 22px);
   }
-  /* 左2カラム / 中央1カラム / 右2カラム。All Events は右カードの直下に置く */
+  /* 左2カラム / 中央1カラム / 右2カラム。All Show Case リンクは右カードの直下に置く */
   .upcoming-card-left{  grid-column:1 / span 2; grid-row:1; }
   /* テキストはカードの上端よりわずかに上へ持ち上げる(縦中央揃えにはしない) */
   .upcoming-copy{       grid-column:3;          grid-row:1; align-self:start;
@@ -278,14 +278,14 @@
     letter-spacing:0.18em;
     line-height:1.35;
     text-transform:uppercase;
-    color:rgba(255,255,255,0.9);
+    color:#E8FF00;
     margin-bottom:clamp(12px, 1.6vw, 20px);
   }
   .upcoming-desc{
     margin-top:clamp(12px, 1.6vw, 20px);
     font-size:clamp(0.76rem, 0.86vw, 0.9rem);
     line-height:1.9;
-    color:rgba(255,255,255,0.68);
+    color:rgba(255,255,255,0.66);
     /* 日本語の禁則処理を効かせ、単語や記号が行頭・行末で不自然に切れないように */
     text-align:justify;
     text-justify:inter-character;
@@ -397,7 +397,7 @@
     fill:currentColor;
   }
 
-  /* ---- All Events リンク ---- */
+  /* ---- All Show Case リンク ---- */
   .upcoming-all{
     display:inline-flex;
     align-items:center;
@@ -407,7 +407,7 @@
     font-size:clamp(0.76rem, 0.9vw, 0.9rem);
     letter-spacing:0.14em;
     text-transform:uppercase;
-    color:rgba(255,255,255,0.75);
+    color:rgba(255,255,255,0.7);
     text-decoration:none;
     padding:6px 2px;
     transition:color .3s ease, gap .3s ease;
@@ -423,7 +423,7 @@
       grid-template-rows:none;
       row-gap:clamp(20px, 4vw, 32px);
     }
-    /* テキスト → カード1 → カード2 → All Events の順 */
+    /* テキスト → カード1 → カード2 → All Show Case の順 */
     .upcoming-copy,
     .upcoming-card-left,
     .upcoming-card-right,
@@ -448,6 +448,355 @@
     .upcoming-all span{ transition:none !important; }
     .event-card:hover{ transform:none; }
     .event-card:hover .event-card-photo{ transform:none; }
+  }
+
+  /* ===================== HEROS SHOWCASE (Parkour / Slackline) =====================
+     動画側カラムをビューポート幅の74vwにし、aspect-ratio:16/9のまま高さを決める。
+     情報側カラムが余ってスカスカに見えないよう、動画側を大きめに確保している。
+     動画は object-fit:contain とし、トリミング(クロップ)は一切行わない。 */
+  .heros-showcase{
+    background:#000;
+  }
+  .heros-row{
+    display:flex;
+    width:100%;
+  }
+  .heros-video{
+    flex:0 0 74vw;
+    width:74vw;
+  }
+  .heros-video video{
+    display:block;
+    width:100%;
+    aspect-ratio:16 / 9;
+    object-fit:contain;
+    background:#000;
+  }
+  /* 情報カラムを縦半分に分割。上半分(ロゴ)は白背景のまま、下半分(テキスト)は黒背景+白文字 */
+  .heros-info{
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+  }
+  .heros-info-logo,
+  .heros-info-text{
+    flex:1 1 50%;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    padding:clamp(20px, 3.2vw, 48px) clamp(24px, 4vw, 64px);
+  }
+  .heros-info-logo{
+    background:#fff;
+  }
+  .heros-info-text{
+    background:#000;
+  }
+  .heros-logo{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  .heros-desc{
+    font-size:clamp(0.82rem, 1vw, 1.02rem);
+    line-height:1.9;
+    color:#fff;
+    max-width:44ch;
+    /* 日本語の禁則処理を効かせる */
+    text-align:justify;
+    text-justify:inter-character;
+    overflow-wrap:anywhere;
+  }
+
+  /* ---- タブレット/モバイル: 縦積み。動画→情報の順に統一する ---- */
+  @media (max-width:900px){
+    .heros-row{
+      flex-direction:column;
+    }
+    .heros-video{
+      flex:0 0 auto;
+      width:100%;
+      order:1;
+    }
+    .heros-info{
+      width:100%;
+      order:2;
+    }
+    .heros-info-logo,
+    .heros-info-text{
+      padding:clamp(28px, 6vw, 44px) clamp(20px, 5vw, 32px);
+    }
+  }
+
+  /* ===================== FOOTER ===================== */
+  .site-footer{
+    position:relative;
+    background:#000;
+    /* 本文との境目を明示する */
+    border-top:1px solid #fff;
+    padding:0 clamp(24px, 5vw, 64px) clamp(18px, 2vw, 26px);
+    /* 背景シルエットが枠外にはみ出した分を切り落とす */
+    overflow:hidden;
+  }
+
+  /* ---- 背景: 選手のシルエット5枚をフッター全体に、互いに被らないよう散らす ---- */
+  .footer-bg{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    user-select:none;
+    overflow:hidden;
+  }
+  .footer-bg img{
+    position:absolute;
+    opacity:0.16;
+    display:block;
+  }
+  /* 5枚を1枚ずつ、テキスト(左)・ロゴ(右下 or 左下)・PKH/SLH(上部ナビ)のどれとも
+     被らない「空いているスペース」(実測で x:40〜83% / y:28〜70% が全ブレークポイントで安全)
+     に、バウンディングボックスが重ならないようランダムな印象で配置する。
+     位置・大きさ・角度・反転をすべて変えて規則性を消す */
+  .fb-1{ top:28%; left:44%; height:clamp(72px, 7.8vw, 122px); transform:rotate(-14deg); }
+  .fb-2{ top:30%; left:70%; height:clamp(88px, 9.4vw, 145px); transform:rotate(11deg); }
+  .fb-3{ top:50%; left:41%; height:clamp(92px, 9.8vw, 152px); transform:rotate(-6deg) scaleX(-1); opacity:0.12; }
+  .fb-4{ top:55%; left:69%; height:clamp(76px, 8.2vw, 126px); transform:rotate(22deg) scaleX(-1); }
+  .fb-5{ top:66%; left:55%; height:clamp(74px, 7.8vw, 120px); transform:rotate(-24deg); opacity:0.11; }
+
+  /* 文字は必ず背景シルエットより手前に置く */
+  .footer-inner,
+  .footer-bottom-section{
+    position:relative;
+    z-index:1;
+  }
+
+  .footer-inner{
+    max-width:1680px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---- 中央セクション: 左にタグライン、右の余白にロゴ(矢印の先端の真上、JSで精密に位置合わせ) ---- */
+  .footer-middle{
+    display:flex;
+    align-items:stretch;
+    gap:clamp(24px, 5vw, 64px);
+  }
+  .footer-tagline-wrap{
+    flex:0 0 auto;
+  }
+  .footer-logo-cluster{
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-end;
+    /* 矢印と同じく画面外から入るたびに毎回スライドインする(JS側で in-view を切り替え) */
+    opacity:0;
+    transform:translateX(-14vw);
+    transition:opacity .6s cubic-bezier(.16,.84,.44,1),
+               transform .6s cubic-bezier(.16,.84,.44,1);
+  }
+  .footer-logo-cluster.in-view{
+    opacity:1;
+    transform:translateX(0);
+    /* 矢印(.36s)と同じタイミングで一緒に現れる */
+    transition-delay:.36s;
+  }
+  .footer-logo-ninja{
+    width:auto;
+    height:clamp(100px, 10.6vw, 180px);
+    fill:#fff;
+    display:block;
+  }
+  .footer-logo-pkh,
+  .footer-logo-slh{
+    height:clamp(52px, 5.6vw, 82px);
+    width:auto;
+    display:block;
+  }
+
+  /* ---- 上部区切り線の下: ナビ(左寄せ) ----
+     site-footer側にあった上パディングをここへ移し、フッター最上部〜区切り線までの
+     全領域をこの要素自身の高さにする。ロゴをその領域全体の中央に絶対配置できるように。 */
+  .footer-topnav{
+    position:relative;
+    padding-top:clamp(36px, 5vw, 68px);
+    padding-bottom:clamp(18px, 2.6vw, 30px);
+    margin-bottom:clamp(28px, 5vw, 56px);
+    border-bottom:1px solid rgba(255,255,255,0.14);
+  }
+  .footer-topnav-row{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:clamp(16px, 3vw, 32px);
+  }
+  /* PKH/SLH: フッター最上部〜区切り線までの領域全体を基準に、上下中央に配置する */
+  .footer-logos-row{
+    position:absolute;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    align-items:center;
+    gap:clamp(16px, 2.2vw, 28px);
+  }
+  .footer-nav{
+    list-style:none;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:clamp(16px, 2.4vw, 36px);
+  }
+  .footer-nav a{
+    font-size:clamp(0.8rem, 0.95vw, 0.95rem);
+    color:rgba(255,255,255,0.75);
+    text-decoration:none;
+    transition:color .3s ease;
+  }
+  .footer-nav a:hover{ color:#fff; }
+
+  /* ---- 下部区切り線の下: SNSアイコンを中央に ---- */
+  .footer-social{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(14px, 1.6vw, 22px);
+  }
+  .footer-social a{
+    display:inline-flex;
+    color:rgba(255,255,255,0.72);
+    transition:color .3s ease;
+  }
+  .footer-social a:hover{ color:#fff; }
+  .footer-social svg{
+    width:clamp(18px, 1.5vw, 22px);
+    height:auto;
+    fill:currentColor;
+    display:block;
+  }
+
+  /* ---- MAKE IT HAPPEN: 折り返さず1行、横幅いっぱいに実測して合わせる ---- */
+  /* ---- MAKE / IT / HAPPEN: 3行に分けて左寄せ。サイズは1行版と同じ(scaleY 1.4)を維持 ---- */
+  .footer-tagline-lines{
+    text-align:left;
+  }
+  .footer-tagline-lines span{
+    display:block;
+    font-family:'Anton', sans-serif;
+    font-size:clamp(2.4rem, 10.6vw, 10.5rem);
+    line-height:1;
+    color:#fff;
+    transform-origin:left center;
+    opacity:0;
+    /* scaleY は常時1.25固定、translateX だけがスライドインでアニメーションする。
+       中心基準で縦に引き伸ばすことで、上下の行のグリフ同士がちょうど密着する(margin不要) */
+    transform:scaleY(1.18) translateX(-14vw);
+    transition:opacity .6s cubic-bezier(.16,.84,.44,1),
+               transform .6s cubic-bezier(.16,.84,.44,1);
+  }
+  /* 上から順にテンポよく(120ms刻み)左からスライドイン */
+  .footer-tagline-lines.in-view span{
+    opacity:1;
+    transform:scaleY(1.18) translateX(0);
+  }
+  .footer-tagline-lines.in-view span:nth-child(1){ transition-delay:0s; }
+  .footer-tagline-lines.in-view span:nth-child(2){ transition-delay:.12s; }
+  /* IT の字形は M/H よりインクの左サイドベアリングが小さく、そのままだと2pxほど左にずれて見える */
+  .footer-tagline-lines span:nth-child(2){ margin-left:2px; }
+  .footer-tagline-lines.in-view span:nth-child(3){ transition-delay:.24s; }
+
+  /* ---- 矢印: フッターの横幅いっぱい。細いラインの先に大きい三角形の矢じり ---- */
+  .footer-tagline-arrow-row{
+    width:100%;
+    margin-top:clamp(10px, 1.4vw, 18px);
+    height:clamp(26px, 4.2vw, 60px);
+    opacity:0;
+    transform:translateX(-14vw);
+    transition:opacity .6s cubic-bezier(.16,.84,.44,1),
+               transform .6s cubic-bezier(.16,.84,.44,1);
+  }
+  /* HAPPEN(3番目)の次にテンポよく登場する */
+  .footer-tagline-arrow-row.in-view{
+    opacity:1;
+    transform:translateX(0);
+    transition-delay:.36s;
+  }
+  .footer-tagline-arrow-row svg{
+    display:block;
+    width:100%;
+    height:100%;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .footer-tagline-lines span{ transition:none !important; opacity:1; transform:scaleY(1.18) !important; }
+    .footer-tagline-arrow-row,
+    .footer-logo-cluster{ transition:none !important; opacity:1; transform:none; }
+  }
+
+  /* ---- 最下部: 区切り線の下に SNS(中央) → コピーライトの順で並べる ---- */
+  .footer-bottom-section{
+    max-width:1680px;
+    margin:clamp(28px, 3.4vw, 48px) auto 0;
+    padding-top:clamp(14px, 1.6vw, 20px);
+    border-top:1px solid rgba(255,255,255,0.12);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:clamp(14px, 2vw, 22px);
+  }
+  .footer-bottom{
+    font-size:clamp(0.7rem, 0.8vw, 0.8rem);
+    letter-spacing:0.04em;
+    color:rgba(255,255,255,0.4);
+  }
+
+  /* ---- 幅が狭いとタグラインの隣にロゴを置く余白がないので、下に縦積みする ---- */
+  @media (max-width:900px){
+    .footer-middle{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .footer-logo-cluster{
+      flex:0 0 auto;
+      width:100%;
+      justify-content:flex-start;
+      margin-top:clamp(20px, 4vw, 32px);
+    }
+    .footer-logo-ninja{
+      height:clamp(76px, 18vw, 118px);
+    }
+  }
+
+  /* ---- 幅が狭いとナビが2行に折り返し、絶対配置のPKH/SLHロゴと重なるので通常フローに戻す ---- */
+  @media (max-width:700px){
+    .footer-topnav-row{
+      flex-wrap:wrap;
+      row-gap:clamp(14px, 3vw, 20px);
+    }
+    .footer-logos-row{
+      position:static;
+      transform:none;
+      width:100%;
+      justify-content:flex-start;
+    }
+    .footer-logo-pkh,
+    .footer-logo-slh{
+      height:clamp(38px, 9vw, 50px);
+    }
+  }
+
+  @media (max-width:520px){
+    /* 幅が狭いと重なって煩雑になるので数を減らす */
+    .footer-bg .fb-1,
+    .footer-bg .fb-4{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .footer-nav a, .footer-social a{ transition:none !important; }
   }
 </style>
 </head>
@@ -803,11 +1152,80 @@
     </div>
   </section>
 
-  <!-- ============ UPCOMING EVENTS ============ -->
+  <!-- ============ UPCOMING SHOW CASE ============ -->
   <!-- 中身は下部スクリプトの UPCOMING 設定から生成される(文言・画像はそこで差し替え) -->
   <section class="upcoming" id="upcoming">
     <div class="upcoming-grid" id="upcomingGrid"></div>
   </section>
+
+  <!-- ============ HEROS SHOWCASE (Parkour / Slackline) ============ -->
+  <!-- 中身は下部スクリプトの HEROS_SHOWCASE 設定から生成される(動画・ロゴ・文言はそこで差し替え) -->
+  <section class="heros-showcase" id="herosShowcase"></section>
+
+  <!-- ============ FOOTER ============ -->
+  <!-- 未実装ページ(about / parkour / slackline)は href だけ先に用意してある -->
+  <footer class="site-footer">
+
+    <div class="footer-bg" aria-hidden="true">
+      <img class="fb-1" src="assets/silhouette-1.png" alt="">
+      <img class="fb-2" src="assets/silhouette-2.png" alt="">
+      <img class="fb-3" src="assets/silhouette-3.png" alt="">
+      <img class="fb-4" src="assets/silhouette-4.png" alt="">
+      <img class="fb-5" src="assets/silhouette-5.png" alt="">
+    </div>
+
+    <div class="footer-inner">
+
+      <div class="footer-topnav">
+        <div class="footer-topnav-row">
+          <ul class="footer-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="index.html#upcoming">Showcase</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+          <div class="footer-logos-row">
+            <img class="footer-logo-pkh" src="assets/pkh-color-logo.svg" alt="Japan Parkour Hero's">
+            <img class="footer-logo-slh" src="assets/slh-color-logo.svg" alt="Japan Slackline Hero's">
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-middle">
+        <div class="footer-tagline-wrap">
+          <p class="footer-tagline-lines">
+            <span>MAKE</span><span>IT</span><span>HAPPEN</span>
+          </p>
+        </div>
+
+        <div class="footer-logo-cluster">
+          <svg class="footer-logo-ninja" id="footerLogoNinja" viewBox="0 0 100.096 112.249" aria-label="NINJA GAMES"><use href="#ninjaLogoWhiteSymbol"></use></svg>
+        </div>
+      </div>
+
+      <div class="footer-tagline-arrow-row" id="footerTaglineArrow" aria-hidden="true">
+        <svg viewBox="0 0 750 250" preserveAspectRatio="none">
+          <polygon points="0,172 0,156 685,156 685,30 735,172" fill="#E8FF00"/>
+        </svg>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom-section">
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2.1.25 2.8.53a5.7 5.7 0 0 1 2.1 1.36 5.7 5.7 0 0 1 1.36 2.1c.28.7.47 1.6.53 2.8.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2.1-.53 2.8a5.7 5.7 0 0 1-1.36 2.1 5.7 5.7 0 0 1-2.1 1.36c-.7.28-1.6.47-2.8.53-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2.1-.25-2.8-.53a5.7 5.7 0 0 1-2.1-1.36 5.7 5.7 0 0 1-1.36-2.1c-.28-.7-.47-1.6-.53-2.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2.1.53-2.8a5.7 5.7 0 0 1 1.36-2.1A5.7 5.7 0 0 1 6.26 2.8c.7-.28 1.6-.47 2.8-.53C10.4 2.2 10.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.51.01-4.75.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94C2.9 9.31 2.89 9.68 2.89 12s.01 2.69.07 3.93c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.61.07-3.93s-.01-2.69-.07-3.93c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36C15.51 4.01 15.14 4 12 4Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm4.6-2a1.03 1.03 0 1 1 0 2.06 1.03 1.03 0 0 1 0-2.06Z"/></svg>
+        </a>
+        <a href="#" aria-label="X">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 3h4.3l4.1 5.6L16.6 3h3.2l-6 7.6L20.5 21h-4.3l-4.5-6.1L6.4 21H3.2l6.4-8.1L3.5 3Zm2.3 1.6 9.9 14.8h2L7.8 4.6h-2Z"/></svg>
+        </a>
+        <a href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5C0 8.4 0 12 0 12s0 3.6.5 5.5a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.5.5-5.5s0-3.6-.5-5.5ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+        </a>
+      </div>
+      <p class="footer-bottom">© 2026 NINJA GAMES. All rights reserved.</p>
+    </div>
+  </footer>
 
 <script>
 (function(){
@@ -900,18 +1318,18 @@
   window.addEventListener('resize', onResize);
 })();
 
-/* ---------- UPCOMING EVENTS ---------- */
+/* ---------- UPCOMING SHOW CASE ---------- */
 /* ▼ 文言・画像・リンク先はこの設定だけ書き換えれば差し替えられます(仮テキスト) */
 var UPCOMING = {
-  eyebrow: 'Upcoming Events',
+  eyebrow: 'Upcoming Show Case',
   /* 段落ごとに配列で持つ(改行は列幅に合わせて自動で折り返す) */
   description: [
     'NINJA GAMESは、トライアル、パルクール、スラックラインなど、生まれも文化も異なる複数のアーバンスポーツを一つのステージに集めた、日本発の複合型コンペティションです。',
     '種目ごとに分かれていた舞台を一つにし、日本トップレベルのアスリートたちが同じ空間で妥協のないパフォーマンスを繰り広げる——それがNINJA GAMESのショーケースです。',
     '単なる競技の寄せ集めではなく、それぞれの種目が持つ自由さや創造性が交差することで、新しいカルチャーが生まれていく。'
   ],
-  allEventsLabel: 'All Events',
-  allEventsHref: 'events.html',
+  allShowCaseLabel: 'All Show Case',
+  allShowCaseHref: 'events.html',
   events: [
     {
       name: 'NINJA GAMES<br>NAGOYA',
@@ -971,11 +1389,11 @@ var UPCOMING = {
     '</div>';
 
   var allHtml =
-    '<a class="upcoming-all" href="' + escapeAttr(UPCOMING.allEventsHref) + '">' +
-      UPCOMING.allEventsLabel + '<span>&rarr;</span>' +
+    '<a class="upcoming-all" href="' + escapeAttr(UPCOMING.allShowCaseHref) + '">' +
+      UPCOMING.allShowCaseLabel + '<span>&rarr;</span>' +
     '</a>';
 
-  // DOM 順は「テキスト → カード1 → カード2 → All Events」。
+  // DOM 順は「テキスト → カード1 → カード2 → All Show Case」。
   // デスクトップでは grid-column / grid-row で左・中央・右へ配置し、
   // 1024px 以下ではこの DOM 順のまま縦に積まれる。
   grid.innerHTML =
@@ -983,6 +1401,106 @@ var UPCOMING = {
     cardHtml(UPCOMING.events[0], 'upcoming-card-left') +
     cardHtml(UPCOMING.events[1], 'upcoming-card-right') +
     allHtml;
+})();
+
+/* ---------- HEROS SHOWCASE ---------- */
+/* ▼ 動画・ロゴ・文言はこの設定だけ書き換えれば差し替えられます(仮テキスト) */
+var HEROS_SHOWCASE = [
+  {
+    video: 'assets/parkour-heros.mp4',
+    logo: 'assets/pkh-color-logo.svg',
+    logoAlt: "Parkour Hero's",
+    desc: '都市という舞台そのものを競技場に変える、パルクールの祭典。壁も階段も手すりも、すべてが表現の舞台になる。制限のない自由な身体表現とスピード感が交差する、パルクール種目のショーケースです。',
+    videoFirst: false /* 上段: 左に情報(白)、右に動画 */
+  },
+  {
+    video: 'assets/slackline-heros.mp4',
+    logo: 'assets/slh-color-logo.svg',
+    logoAlt: "Slackline Hero's",
+    desc: '空中に張られた一本のラインの上で繰り広げられる、静と動のせめぎ合い。わずかな重心の揺れと真剣勝負が織りなす、スラックライン種目のショーケースです。',
+    videoFirst: true /* 下段: 左に動画、右に情報(白) */
+  }
+];
+
+(function(){
+  var section = document.getElementById('herosShowcase');
+  if (!section) return;
+
+  function rowHtml(item){
+    var videoHtml =
+      '<div class="heros-video">' +
+        '<video src="' + item.video + '" autoplay muted loop playsinline></video>' +
+      '</div>';
+    var infoHtml =
+      '<div class="heros-info">' +
+        '<div class="heros-info-logo">' +
+          '<img class="heros-logo" src="' + item.logo + '" alt="' + item.logoAlt + '">' +
+        '</div>' +
+        '<div class="heros-info-text">' +
+          '<p class="heros-desc">' + item.desc + '</p>' +
+        '</div>' +
+      '</div>';
+    return '<div class="heros-row">' +
+      (item.videoFirst ? videoHtml + infoHtml : infoHtml + videoHtml) +
+    '</div>';
+  }
+
+  section.innerHTML = HEROS_SHOWCASE.map(rowHtml).join('');
+})();
+
+/* ---------- FOOTER TAGLINE: 画面外から入るたびに毎回スライドイン(矢印・ロゴも一緒に) ---------- */
+(function(){
+  var lines = document.querySelector('.footer-tagline-lines');
+  var arrowRow = document.getElementById('footerTaglineArrow');
+  var logoCluster = document.querySelector('.footer-logo-cluster');
+  if (!lines) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion){
+    lines.classList.add('in-view');
+    if (arrowRow) arrowRow.classList.add('in-view');
+    if (logoCluster) logoCluster.classList.add('in-view');
+    return;
+  }
+
+  // unobserve せず、画面に入るたび付与・出るたび解除を繰り返す
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      lines.classList.toggle('in-view', entry.isIntersecting);
+      if (arrowRow) arrowRow.classList.toggle('in-view', entry.isIntersecting);
+      if (logoCluster) logoCluster.classList.toggle('in-view', entry.isIntersecting);
+    });
+  }, { threshold: 0.35 });
+  observer.observe(lines);
+})();
+
+/* ---------- FOOTER LOGO: ninja games ロゴを矢印の先端のすぐ上へ精密に位置合わせ ----------
+   矢印SVGは viewBox 0 0 750 250 / preserveAspectRatio="none" で、先端は x=735(=98%)。
+   矢印行・ロゴ行はどちらもスクロールで translateX するスライドインアニメーションを持つため、
+   実際の描画位置(getBoundingClientRect)ではなく、アニメーションの影響を受けない
+   .footer-inner を基準に「アニメーション完了後の位置」を計算で求める。 */
+(function(){
+  var logo = document.getElementById('footerLogoNinja');
+  var inner = document.querySelector('.footer-inner');
+  if (!logo || !inner) return;
+
+  function align(){
+    if (window.matchMedia('(max-width:900px)').matches){
+      logo.style.transform = '';
+      return;
+    }
+    logo.style.transform = '';
+    var innerRect = inner.getBoundingClientRect();
+    var tipX = innerRect.left + innerRect.width * (735 / 750);
+    // 幅は translateX の影響を受けないので、アニメーション中でも安全に測れる
+    var logoWidth = logo.getBoundingClientRect().width;
+    var logoNaturalCenterX = innerRect.right - logoWidth / 2;
+    var delta = tipX - logoNaturalCenterX;
+    logo.style.transform = 'translateX(' + delta + 'px)';
+  }
+
+  align();
+  window.addEventListener('resize', align);
 })();
 </script>
 </body>
