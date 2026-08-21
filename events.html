@@ -91,41 +91,7 @@
     margin:0 auto;
   }
 
-  /* ---- 切り替えタブ(横長ボタン2つ) ---- */
-  .tabs{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:clamp(10px, 1.2vw, 18px);
-    margin-bottom:clamp(28px, 4vw, 52px);
-  }
-  .tab{
-    appearance:none;
-    border:1px solid rgba(255,255,255,0.28);
-    background:transparent;
-    color:rgba(255,255,255,0.62);
-    font-family:'Almarai', sans-serif;
-    font-weight:800;
-    font-size:clamp(0.82rem, 1.15vw, 1.15rem);
-    letter-spacing:0.16em;
-    text-transform:uppercase;
-    padding:clamp(14px, 1.6vw, 22px) clamp(12px, 2vw, 28px);
-    cursor:pointer;
-    transition:background .3s ease, color .3s ease, border-color .3s ease;
-  }
-  .tab:hover{ color:#fff; border-color:rgba(255,255,255,0.55); }
-  .tab[aria-selected="true"]{
-    background:#fff;
-    border-color:#fff;
-    color:#000;
-  }
-  .tab-count{
-    margin-left:0.7em;
-    font-size:0.78em;
-    opacity:0.6;
-  }
-
   /* ---- カードグリッド ---- */
-  .panel[hidden]{ display:none; }
   .card-grid{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
@@ -234,7 +200,6 @@
   }
   @media (max-width:640px){
     .card-grid{ grid-template-columns:1fr; }
-    .tabs{ grid-template-columns:1fr 1fr; }
     .event-card{ height:clamp(340px, 52vh, 460px); }
   }
 
@@ -278,28 +243,19 @@
     overflow:hidden;
   }
 
-  /* ---- 背景: 選手のシルエット5枚をフッター全体に、互いに被らないよう散らす ---- */
+  /* ---- 背景: ロゴマーク(ninja_logo_white_mark_only.svg)を斜めの総柄でフッター全体に敷き詰める ---- */
   .footer-bg{
     position:absolute;
     inset:0;
+    width:100%;
+    height:100%;
     pointer-events:none;
     user-select:none;
     overflow:hidden;
   }
-  .footer-bg img{
-    position:absolute;
-    opacity:0.16;
-    display:block;
+  .footer-pattern-logo{
+    opacity:0.30;
   }
-  /* 5枚を1枚ずつ、テキスト(左)・ロゴ(右下 or 左下)・PKH/SLH(上部ナビ)のどれとも
-     被らない「空いているスペース」(実測で x:40〜83% / y:28〜70% が全ブレークポイントで安全)
-     に、バウンディングボックスが重ならないようランダムな印象で配置する。
-     位置・大きさ・角度・反転をすべて変えて規則性を消す */
-  .fb-1{ top:28%; left:44%; height:clamp(72px, 7.8vw, 122px); transform:rotate(-14deg); }
-  .fb-2{ top:30%; left:70%; height:clamp(88px, 9.4vw, 145px); transform:rotate(11deg); }
-  .fb-3{ top:50%; left:41%; height:clamp(92px, 9.8vw, 152px); transform:rotate(-6deg) scaleX(-1); opacity:0.12; }
-  .fb-4{ top:55%; left:69%; height:clamp(76px, 8.2vw, 126px); transform:rotate(22deg) scaleX(-1); }
-  .fb-5{ top:66%; left:55%; height:clamp(74px, 7.8vw, 120px); transform:rotate(-24deg); opacity:0.11; }
 
   /* 文字は必ず背景シルエットより手前に置く */
   .footer-inner,
@@ -354,6 +310,18 @@
     width:auto;
     display:block;
   }
+  /* リンク化しても既存のレイアウトに影響させない。クリックできることだけ軽く示す */
+  .footer-logo-link{
+    display:contents;
+  }
+  .footer-logo-link img,
+  .footer-logo-link svg{
+    transition:opacity .3s ease;
+  }
+  .footer-logo-link:hover img,
+  .footer-logo-link:hover svg{
+    opacity:0.8;
+  }
 
   /* ---- 上部区切り線の下: ナビ(左寄せ) ----
      site-footer側にあった上パディングをここへ移し、フッター最上部〜区切り線までの
@@ -395,6 +363,61 @@
     transition:color .3s ease;
   }
   .footer-nav a:hover{ color:#fff; }
+
+  /* ---- Showcase: クリックで Upcoming / Past を出し分けるドロップダウン ---- */
+  .footer-nav-dropdown{
+    position:relative;
+  }
+  .footer-nav-toggle{
+    background:none;
+    border:none;
+    padding:0;
+    margin:0;
+    font-family:inherit;
+    font-size:clamp(0.8rem, 0.95vw, 0.95rem);
+    color:rgba(255,255,255,0.75);
+    cursor:pointer;
+    transition:color .3s ease;
+  }
+  .footer-nav-toggle:hover,
+  .footer-nav-dropdown.is-open .footer-nav-toggle{
+    color:#fff;
+  }
+  .footer-dropdown-menu{
+    position:absolute;
+    left:0;
+    top:100%;
+    margin-top:0.7em;
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:0.6em;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity .2s ease, transform .2s ease, visibility .2s ease;
+    z-index:5;
+  }
+  .footer-nav-dropdown.is-open .footer-dropdown-menu,
+  .footer-nav-dropdown:hover .footer-dropdown-menu,
+  .footer-nav-dropdown:focus-within .footer-dropdown-menu{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+  }
+  .footer-dropdown-menu a{
+    font-size:clamp(0.8rem, 0.95vw, 0.95rem);
+    color:rgba(255,255,255,0.75);
+    text-decoration:none;
+    white-space:nowrap;
+    transition:color .3s ease;
+  }
+  .footer-dropdown-menu a:hover{
+    color:#fff;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .footer-dropdown-menu{ transition:none !important; }
+  }
 
   /* ---- 下部区切り線の下: SNSアイコンを中央に ---- */
   .footer-social{
@@ -526,12 +549,6 @@
     }
   }
 
-  @media (max-width:520px){
-    /* 幅が狭いと重なって煩雑になるので数を減らす */
-    .footer-bg .fb-1,
-    .footer-bg .fb-4{ display:none; }
-  }
-
   @media (prefers-reduced-motion: reduce){
     .footer-nav a, .footer-social a{ transition:none !important; }
   }
@@ -545,8 +562,8 @@
     <div class="events-hero-veil"></div>
     <div class="events-hero-vignette"></div>
     <div class="events-hero-inner">
-      <h1>ALL SHOW CASE</h1>
-      <p class="lead">Past &amp; Upcoming</p>
+      <h1>PAST SHOW CASE</h1>
+      <p class="lead">These Are Our Past Performances</p>
     </div>
   </header>
 
@@ -584,20 +601,8 @@
   <main class="events-body">
     <div class="events-inner">
 
-      <!-- 切り替えタブ -->
-      <div class="tabs" role="tablist">
-        <button class="tab" id="tabUpcoming" role="tab"
-                aria-selected="true" aria-controls="panelUpcoming">Upcoming</button>
-        <button class="tab" id="tabPast" role="tab"
-                aria-selected="false" aria-controls="panelPast">Past</button>
-      </div>
-
       <!-- カードは下部スクリプトの SHOWCASE 設定から生成される -->
-      <section class="panel" id="panelUpcoming" role="tabpanel" aria-labelledby="tabUpcoming">
-        <div class="card-grid" id="gridUpcoming"></div>
-      </section>
-
-      <section class="panel" id="panelPast" role="tabpanel" aria-labelledby="tabPast" hidden>
+      <section class="panel" id="panelPast">
         <div class="card-grid" id="gridPast"></div>
       </section>
 
@@ -612,13 +617,26 @@
   <!-- 未実装ページ(about / parkour / slackline)は href だけ先に用意してある -->
   <footer class="site-footer">
 
-    <div class="footer-bg" aria-hidden="true">
-      <img class="fb-1" src="assets/silhouette-1.png" alt="">
-      <img class="fb-2" src="assets/silhouette-2.png" alt="">
-      <img class="fb-3" src="assets/silhouette-3.png" alt="">
-      <img class="fb-4" src="assets/silhouette-4.png" alt="">
-      <img class="fb-5" src="assets/silhouette-5.png" alt="">
-    </div>
+    <svg class="footer-bg" aria-hidden="true">
+      <defs>
+        <!-- Chromiumではpattern内の<use href="#symbol">が正しく描画されない(回転も無視される)ため、
+             ninja_logo_white_mark_only.svg のパスをここに直接インラインしている -->
+        <pattern id="footerLogoPattern" width="70" height="70" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <g class="footer-pattern-logo" fill="#fff" transform="translate(22,20) scale(0.25975) translate(-59.277,-87.717)">
+            <path d="m 132.27253,138.63222 7.43232,-7.43232 v -25.08215 l -7.43232,-7.431972 -2.62784,2.627492 2.62784,2.62784 z" />
+            <path d="m 139.70471,154.5959 v -7.62988 l -3.81494,3.81494 -1.31374,1.31375 -1.31375,-1.31375 -0.98989,-0.98954 -1.85773,-1.85808 -2.40771,-2.40771 -1.31409,-1.31374 -7.11342,-7.11377 h -10.51066 l 12.36874,12.3691 1.3141,1.31374 5.25533,5.25533 1.31375,1.31375 1.09396,1.09396 1.85773,1.85808 1.79035,1.78999 0.4011,0.38665 h 1.83974 3.40113 l 2.62784,-2.62749 -2.62784,-2.62784 z" />
+            <path d="M 113.99258,127.79509 H 103.48192 92.633996 v 3.71616 l 3.71616,3.71616 2.62785,2.62749 2.627484,-2.62749 h 6.68091 2.62749 10.51101 2.62749 6.36199 v -7.43232 h -13.79431 z" />
+            <path d="m 85.201916,121.76267 1.85808,-1.85808 1.09361,-1.09361 -1.09361,-1.09397 -1.85808,-1.85808 -2.30364,-2.30328 -5.12868,5.12833 -1.85773,1.85808 -4.4002,4.4002 -1.31374,1.31374 -5.25533,5.25533 v 3.71616 h 3.71616 l 1.53917,1.53917 1.31374,1.31375 4.4002,4.40019 v -8.80004 -1.71062 -0.91722 l 0.85513,-0.85513 1.0026,-1.0026 z" />
+            <path d="m 107.4234,99.541158 1.31374,-1.31374 1.31375,1.31374 20.33446,20.334112 0.10195,-10.40871 -15.18073,-15.180732 -6.56943,-6.569075 h -3.71616 v 3.715808 l -1.53917,1.539522 -1.31374,1.313745 -11.386614,11.386612 5.25533,5.25533 z" />
+            <path d="m 148.86946,127.8489 -4.99004,-0.0536 h -2.31669 v 3.71616 0.45826 l -1.85808,1.85808 -5.11563,5.11563 -1.85808,1.85808 -0.45826,0.45861 -1.85808,1.85808 -1.09397,1.09361 1.09397,1.09396 1.85808,1.85809 2.30328,2.30328 5.12869,-5.12868 1.85808,-1.85808 1.67887,-1.67887 1.85808,-1.85808 7.43232,-7.43197 z" />
+            <path d="m 110.05106,163.4815 -1.31374,1.31374 -1.3141,-1.31374 -20.363044,-20.36339 v 10.51066 l 15.107714,15.10806 1.3141,1.31374 5.25533,5.25533 h 3.71616 v -3.7158 l 2.85291,-2.85327 11.38661,-11.38661 -5.25533,-5.25533 z" />
+            <path d="m 85.201916,124.39037 -7.43232,7.43514 v 25.07933 l 7.43232,7.43197 2.62784,-2.62749 -2.62784,-2.62784 z" />
+            <path d="m 77.769736,108.42679 v 7.62952 l 3.81494,-3.81458 1.31374,-1.3141 1.31375,1.3141 0.98989,0.98954 1.85808,1.85808 2.40736,2.40771 1.31409,1.31374 7.13176,7.13211 h 10.510664 l -12.387084,-12.38744 -1.3141,-1.31374 -5.25533,-5.25533 -1.31375,-1.3141 -1.09361,-1.09361 -1.85808,-1.85808 -1.79035,-1.78999 -0.38029,-0.387 h -1.86055 -3.40113 l -2.62784,2.62784 2.62784,2.62784 z" />
+          </g>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#footerLogoPattern)"></rect>
+    </svg>
 
     <div class="footer-inner">
 
@@ -627,12 +645,20 @@
           <ul class="footer-nav">
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="index.html#upcoming">Showcase</a></li>
+            <li><a href="athlete.html">Athlete</a></li>
+            <li class="footer-nav-dropdown">
+              <button type="button" class="footer-nav-toggle" aria-expanded="false" aria-haspopup="true">Showcase</button>
+              <ul class="footer-dropdown-menu">
+                <li><a href="index.html#upcoming">Upcoming</a></li>
+                <li><a href="events.html">Past</a></li>
+              </ul>
+            </li>
+            <li><a href="sponsor.html">Sponsor</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
           <div class="footer-logos-row">
-            <img class="footer-logo-pkh" src="assets/pkh-color-logo.svg" alt="Japan Parkour Hero's">
-            <img class="footer-logo-slh" src="assets/slh-color-logo.svg" alt="Japan Slackline Hero's">
+            <a href="index.html#parkour-heros" class="footer-logo-link"><img class="footer-logo-pkh" src="assets/pkh-color-logo.svg" alt="Japan Parkour Hero's"></a>
+            <a href="index.html#slackline-heros" class="footer-logo-link"><img class="footer-logo-slh" src="assets/slh-color-logo.svg" alt="Japan Slackline Hero's"></a>
           </div>
         </div>
       </div>
@@ -645,7 +671,9 @@
         </div>
 
         <div class="footer-logo-cluster">
-          <svg class="footer-logo-ninja" id="footerLogoNinja" viewBox="0 0 100.096 112.249" aria-label="NINJA GAMES"><use href="#ninjaLogoWhiteSymbol"></use></svg>
+          <a href="index.html" class="footer-logo-link" aria-label="NINJA GAMES ホームへ">
+            <svg class="footer-logo-ninja" id="footerLogoNinja" viewBox="0 0 100.096 112.249" aria-hidden="true"><use href="#ninjaLogoWhiteSymbol"></use></svg>
+          </a>
         </div>
       </div>
 
@@ -659,7 +687,7 @@
 
     <div class="footer-bottom-section">
       <div class="footer-social">
-        <a href="#" aria-label="Instagram">
+        <a href="https://www.instagram.com/ninjagames_official?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==&amp;igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2.1.25 2.8.53a5.7 5.7 0 0 1 2.1 1.36 5.7 5.7 0 0 1 1.36 2.1c.28.7.47 1.6.53 2.8.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2.1-.53 2.8a5.7 5.7 0 0 1-1.36 2.1 5.7 5.7 0 0 1-2.1 1.36c-.7.28-1.6.47-2.8.53-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2.1-.25-2.8-.53a5.7 5.7 0 0 1-2.1-1.36 5.7 5.7 0 0 1-1.36-2.1c-.28-.7-.47-1.6-.53-2.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2.1.53-2.8a5.7 5.7 0 0 1 1.36-2.1A5.7 5.7 0 0 1 6.26 2.8c.7-.28 1.6-.47 2.8-.53C10.4 2.2 10.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.51.01-4.75.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94C2.9 9.31 2.89 9.68 2.89 12s.01 2.69.07 3.93c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.61.07-3.93s-.01-2.69-.07-3.93c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36C15.51 4.01 15.14 4 12 4Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm4.6-2a1.03 1.03 0 1 1 0 2.06 1.03 1.03 0 0 1 0-2.06Z"/></svg>
         </a>
         <a href="#" aria-label="X">
@@ -677,10 +705,6 @@
 <script>
 /* ▼ 仮データ。文言・画像・リンク先はここを書き換えれば差し替えられます */
 var SHOWCASE = {
-  upcoming: [
-    { name:'NINJA GAMES<br>NAGOYA', date:'7-9 AUG',   venue:'愛知県名古屋市 / 未定',            image:'assets/event-nagoya.jpg' },
-    { name:'NINJA GAMES<br>ECOPA',  date:'12-13 SEP', venue:'静岡県袋井市 / エコパスタジアム',   image:'assets/event-ecopa.jpg'  }
-  ],
   past: [
     { name:'NINJA GAMES<br>KARIYA',   date:'31 MAY',    venue:'愛知県刈谷市 / 刈谷アーバンフェス', image:'assets/show-02.jpg'      },
     { name:'NINJA GAMES<br>ECOPA',    date:'6 JUN',     venue:'静岡県袋井市 / エコパスタジアム',   image:'assets/show-04.jpg'      },
@@ -727,31 +751,39 @@ var SHOWCASE = {
   function render(gridId, list){
     document.getElementById(gridId).innerHTML = list.map(cardHtml).join('');
   }
-  render('gridUpcoming', SHOWCASE.upcoming);
   render('gridPast', SHOWCASE.past);
+})();
 
-  // 件数をタブに添える
-  document.getElementById('tabUpcoming').innerHTML =
-    'Upcoming<span class="tab-count">' + SHOWCASE.upcoming.length + '</span>';
-  document.getElementById('tabPast').innerHTML =
-    'Past<span class="tab-count">' + SHOWCASE.past.length + '</span>';
+/* ---------- FOOTER NAV DROPDOWN: Showcase クリックで Upcoming / Past を開閉 ---------- */
+(function(){
+  var dropdown = document.querySelector('.footer-nav-dropdown');
+  var toggle = dropdown && dropdown.querySelector('.footer-nav-toggle');
+  if (!dropdown || !toggle) return;
 
-  /* ---- タブ切り替え ---- */
-  var tabs = [
-    { tab: document.getElementById('tabUpcoming'), panel: document.getElementById('panelUpcoming') },
-    { tab: document.getElementById('tabPast'),     panel: document.getElementById('panelPast') }
-  ];
-
-  function select(index){
-    tabs.forEach(function(t, i){
-      var active = i === index;
-      t.tab.setAttribute('aria-selected', active ? 'true' : 'false');
-      t.panel.hidden = !active;
-    });
+  function close(){
+    dropdown.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  function open(){
+    dropdown.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
   }
 
-  tabs.forEach(function(t, i){
-    t.tab.addEventListener('click', function(){ select(i); });
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (dropdown.classList.contains('is-open')) close(); else open();
+  });
+
+  dropdown.querySelectorAll('.footer-dropdown-menu a').forEach(function(link){
+    link.addEventListener('click', close);
+  });
+
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) close();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') close();
   });
 })();
 
