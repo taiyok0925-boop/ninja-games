@@ -254,7 +254,7 @@
   /* ===================== UPCOMING SHOW CASE ===================== */
   .upcoming{
     background:#000;
-    padding:clamp(56px, 9vw, 120px) clamp(24px, 5vw, 64px);
+    padding:clamp(12px, 1.4vw, 20px) clamp(24px, 5vw, 64px);
   }
   .upcoming-grid{
     max-width:1680px;
@@ -270,7 +270,7 @@
     text-transform:uppercase;
     font-size:clamp(1.7rem, 3.6vw, 2.8rem);
     color:#E8FF00;
-    margin-bottom:clamp(36px, 5vw, 64px);
+    margin-bottom:clamp(12px, 1.4vw, 20px);
   }
 
   /* ---- 左に大きいカード、右にテキスト+小さいカードを縦積み ---- */
@@ -474,7 +474,7 @@
   /* ===================== OUR MOVEMENT ===================== */
   /* デスクトップ版(五角形ハブ+ホバー演出)。モバイル版(2x3グリッド)は次のステップで実装予定 */
   .movement{
-    background:#000;
+    background:#161616;
     padding:clamp(12px, 1.4vw, 20px) clamp(24px, 5vw, 64px);
   }
   .movement-inner{
@@ -498,7 +498,6 @@
   .movement-svg polygon{
     fill:none;
     stroke:#E8FF00;
-    stroke-opacity:0.35;
     stroke-width:0.3;
   }
 
@@ -588,6 +587,29 @@
     opacity:1;
   }
 
+  /* ---- カード内に常時表示するロゴ(現状「大会」のPKH/SLHのみ)。
+     ポップ前は少し大きめでカード下寄りに、ポップ後は説明文と並ぶ通常サイズ・位置に戻す ---- */
+  .movement-tile-logos{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0.6em;
+    margin-top:clamp(28px, 3.4vw, 44px);
+    transition:margin-top .25s ease;
+  }
+  .movement-tile:hover .movement-tile-logos{
+    margin-top:0.6em;
+  }
+  .movement-tile-logos img{
+    height:clamp(36px, 4.6vw, 54px);
+    width:auto;
+    display:block;
+    transition:height .25s ease;
+  }
+  .movement-tile:hover .movement-tile-logos img{
+    height:clamp(22px, 2.8vw, 34px);
+  }
+
   /* ---- カード右下に置く個別リンク(現状ショーケースのお問い合わせのみ) ---- */
   .movement-tile-link{
     position:absolute;
@@ -614,6 +636,8 @@
     .movement-tile{ transition:none !important; }
     .movement-tile-desc{ transition:none !important; }
     .movement-tile-link{ transition:none !important; }
+    .movement-tile-logos,
+    .movement-tile-logos img{ transition:none !important; }
   }
 
   /* ===================== HEROS SHOWCASE (Parkour / Slackline) =====================
@@ -666,6 +690,10 @@
     width:100%;
     height:auto;
     display:block;
+    transition:opacity .3s ease;
+  }
+  .heros-info-logo a:hover .heros-logo{
+    opacity:0.8;
   }
   .heros-desc{
     font-size:clamp(0.82rem, 1vw, 1.02rem);
@@ -1998,7 +2026,7 @@ var UPCOMING = {
 /* ▼ 仮データ。タイトル・説明文・写真はここを書き換えれば差し替えられます */
 var MOVEMENT_PROJECTS = [
   { title: 'ショーケース', desc: '各地のイベントやフェスに出張し、トップアスリートたちのパフォーマンスでその場を盛り上げます。', photo: 'assets/show-01.jpg', link: { label: 'お問い合わせ', href: 'contact.html' } },
-  { title: '大会', desc: '全国各地で開催する公式コンペティション。日本トップレベルの選手たちが一堂に会し、技を競い合います。', photo: 'assets/event-nagoya.jpg' },
+  { title: '大会', desc: '全国各地で開催する公式コンペティション。日本トップレベルの選手たちが一堂に会し、技を競い合います。', photo: 'assets/event-nagoya.jpg', logos: ['assets/pkh-color-logo.svg', 'assets/slh-color-logo.svg'] },
   { title: '体験会', desc: '初心者向けの無料体験イベント。道具の使い方から基本動作まで、スタッフが丁寧にサポートします。', photo: 'assets/show-03.jpg' },
   { title: '映像制作', desc: '大会やパフォーマンスの撮影・編集を行い、シーンの魅力を映像として広く発信します。', photo: 'assets/events-hero.jpg' },
   { title: 'セクション制作&レンタル', desc: 'スケートパークやパルクール用セクションの設計・設営・貸出まで一貫してサポートします。', photo: 'assets/show-04.jpg' }
@@ -2040,6 +2068,13 @@ var MOVEMENT_PROJECTS = [
         '<span class="movement-tile-overlay"></span>' +
         '<div class="movement-tile-content">' +
           '<h3 class="movement-tile-title">' + escapeAttr(proj.title) + '</h3>' +
+          (proj.logos ?
+            '<div class="movement-tile-logos">' +
+              proj.logos.map(function(src){
+                return '<img src="' + escapeAttr(src) + '" alt="" loading="lazy">';
+              }).join('') +
+            '</div>' :
+            '') +
           '<p class="movement-tile-desc">' + escapeAttr(proj.desc) + '</p>' +
         '</div>' +
         (proj.link ?
@@ -2060,7 +2095,7 @@ var HEROS_SHOWCASE = [
     logo: 'assets/pkh-color-logo.svg',
     logoAlt: "Parkour Hero's",
     desc: '都市という舞台そのものを競技場に変える、パルクールの祭典。壁も階段も手すりも、すべてが表現の舞台になる。制限のない自由な身体表現とスピード感が交差する、パルクール種目のショーケースです。',
-    instagram: 'https://www.instagram.com/parkourheros?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
+    instagram: 'https://www.instagram.com/parkourheros?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==',
     videoFirst: false /* 上段: 左に情報(白)、右に動画 */
   },
   {
@@ -2069,7 +2104,7 @@ var HEROS_SHOWCASE = [
     logo: 'assets/slh-color-logo.svg',
     logoAlt: "Slackline Hero's",
     desc: '空中に張られた一本のラインの上で繰り広げられる、静と動のせめぎ合い。わずかな重心の揺れと真剣勝負が織りなす、スラックライン種目のショーケースです。',
-    instagram: 'https://www.instagram.com/slacklineheros?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
+    instagram: 'https://www.instagram.com/slacklineheros?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==',
     videoFirst: true /* 下段: 左に動画、右に情報(白) */
   }
 ];
@@ -2095,7 +2130,11 @@ var HEROS_SHOWCASE = [
     var infoHtml =
       '<div class="heros-info">' +
         '<div class="heros-info-logo">' +
-          '<img class="heros-logo" src="' + item.logo + '" alt="' + item.logoAlt + '">' +
+          (item.instagram ?
+            '<a href="' + escapeAttr(item.instagram) + '" target="_blank" rel="noopener noreferrer">' +
+              '<img class="heros-logo" src="' + item.logo + '" alt="' + item.logoAlt + '">' +
+            '</a>' :
+            '<img class="heros-logo" src="' + item.logo + '" alt="' + item.logoAlt + '">') +
         '</div>' +
         '<div class="heros-info-text">' +
           '<p class="heros-desc">' + item.desc + '</p>' +
