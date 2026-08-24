@@ -479,10 +479,43 @@
     align-items:center;
     gap:clamp(14px, 2vw, 22px);
   }
+  /* ---- 会社概要(左)+ SNSアイコン(中央)を横並びに、SNSは常に行の中央に来るよう左右を均等な余白にする ---- */
+  .footer-bottom-row{
+    display:flex;
+    align-items:center;
+    width:100%;
+  }
+  .footer-company{
+    flex:1 1 0;
+    text-align:left;
+  }
+  .footer-company p{
+    font-size:clamp(0.7rem, 0.8vw, 0.8rem);
+    line-height:1.7;
+    letter-spacing:0.02em;
+    color:#fff;
+  }
+  .footer-bottom-spacer{
+    flex:1 1 0;
+  }
   .footer-bottom{
     font-size:clamp(0.7rem, 0.8vw, 0.8rem);
     letter-spacing:0.04em;
     color:rgba(255,255,255,0.4);
+  }
+
+  @media (max-width:700px){
+    .footer-bottom-row{
+      flex-direction:column;
+      align-items:center;
+      gap:clamp(14px, 2vw, 22px);
+    }
+    .footer-company{
+      flex:0 0 auto;
+      text-align:center;
+      order:2;
+    }
+    .footer-bottom-spacer{ display:none; }
   }
 
   /* ---- 幅が狭いとタグラインの隣にロゴを置く余白がないので、下に縦積みする ---- */
@@ -640,7 +673,13 @@
           <ul class="footer-nav">
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="athlete.html">Athlete</a></li>
+            <li class="footer-nav-dropdown">
+              <button type="button" class="footer-nav-toggle" aria-expanded="false" aria-haspopup="true">Athlete</button>
+              <ul class="footer-dropdown-menu">
+                <li><a href="athlete.html">All Athlete</a></li>
+                <li><a href="index.html#crew">Crew</a></li>
+              </ul>
+            </li>
             <li class="footer-nav-dropdown">
               <button type="button" class="footer-nav-toggle" aria-expanded="false" aria-haspopup="true">Showcase</button>
               <ul class="footer-dropdown-menu">
@@ -681,16 +720,24 @@
     </div>
 
     <div class="footer-bottom-section">
-      <div class="footer-social">
-        <a href="https://www.instagram.com/ninjagames_official?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==&amp;igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2.1.25 2.8.53a5.7 5.7 0 0 1 2.1 1.36 5.7 5.7 0 0 1 1.36 2.1c.28.7.47 1.6.53 2.8.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2.1-.53 2.8a5.7 5.7 0 0 1-1.36 2.1 5.7 5.7 0 0 1-2.1 1.36c-.7.28-1.6.47-2.8.53-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2.1-.25-2.8-.53a5.7 5.7 0 0 1-2.1-1.36 5.7 5.7 0 0 1-1.36-2.1c-.28-.7-.47-1.6-.53-2.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2.1.53-2.8a5.7 5.7 0 0 1 1.36-2.1A5.7 5.7 0 0 1 6.26 2.8c.7-.28 1.6-.47 2.8-.53C10.4 2.2 10.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.51.01-4.75.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94C2.9 9.31 2.89 9.68 2.89 12s.01 2.69.07 3.93c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.61.07-3.93s-.01-2.69-.07-3.93c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36C15.51 4.01 15.14 4 12 4Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm4.6-2a1.03 1.03 0 1 1 0 2.06 1.03 1.03 0 0 1 0-2.06Z"/></svg>
-        </a>
-        <a href="#" aria-label="X">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 3h4.3l4.1 5.6L16.6 3h3.2l-6 7.6L20.5 21h-4.3l-4.5-6.1L6.4 21H3.2l6.4-8.1L3.5 3Zm2.3 1.6 9.9 14.8h2L7.8 4.6h-2Z"/></svg>
-        </a>
-        <a href="#" aria-label="YouTube">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5C0 8.4 0 12 0 12s0 3.6.5 5.5a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.5.5-5.5s0-3.6-.5-5.5ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
-        </a>
+      <div class="footer-bottom-row">
+        <div class="footer-company">
+          <p>NINJA GAMES 株式会社</p>
+          <p>代表取締役　小池知宏</p>
+          <p>愛知県みよし市三好町湯ノ前11-1 湯ノ前館</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/ninjagames_official?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==&amp;igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2.1.25 2.8.53a5.7 5.7 0 0 1 2.1 1.36 5.7 5.7 0 0 1 1.36 2.1c.28.7.47 1.6.53 2.8.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2.1-.53 2.8a5.7 5.7 0 0 1-1.36 2.1 5.7 5.7 0 0 1-2.1 1.36c-.7.28-1.6.47-2.8.53-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2.1-.25-2.8-.53a5.7 5.7 0 0 1-2.1-1.36 5.7 5.7 0 0 1-1.36-2.1c-.28-.7-.47-1.6-.53-2.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2.1.53-2.8a5.7 5.7 0 0 1 1.36-2.1A5.7 5.7 0 0 1 6.26 2.8c.7-.28 1.6-.47 2.8-.53C10.4 2.2 10.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.51.01-4.75.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94C2.9 9.31 2.89 9.68 2.89 12s.01 2.69.07 3.93c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.61.07-3.93s-.01-2.69-.07-3.93c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36C15.51 4.01 15.14 4 12 4Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm4.6-2a1.03 1.03 0 1 1 0 2.06 1.03 1.03 0 0 1 0-2.06Z"/></svg>
+          </a>
+          <a href="#" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 3h4.3l4.1 5.6L16.6 3h3.2l-6 7.6L20.5 21h-4.3l-4.5-6.1L6.4 21H3.2l6.4-8.1L3.5 3Zm2.3 1.6 9.9 14.8h2L7.8 4.6h-2Z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5C0 8.4 0 12 0 12s0 3.6.5 5.5a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.5.5-5.5s0-3.6-.5-5.5ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+          </a>
+        </div>
+        <div class="footer-bottom-spacer" aria-hidden="true"></div>
       </div>
       <p class="footer-bottom">© 2026 NINJA GAMES. All rights reserved.</p>
     </div>
@@ -722,36 +769,47 @@
   });
 })();
 
-/* ---------- FOOTER NAV DROPDOWN: Showcase クリックで Upcoming / Past を開閉 ---------- */
+/* ---------- FOOTER NAV DROPDOWN: Athlete / Showcase クリックでサブメニューを開閉 ---------- */
 (function(){
-  var dropdown = document.querySelector('.footer-nav-dropdown');
-  var toggle = dropdown && dropdown.querySelector('.footer-nav-toggle');
-  if (!dropdown || !toggle) return;
+  var dropdowns = document.querySelectorAll('.footer-nav-dropdown');
+  if (!dropdowns.length) return;
 
-  function close(){
+  function close(dropdown){
+    var toggle = dropdown.querySelector('.footer-nav-toggle');
     dropdown.classList.remove('is-open');
-    toggle.setAttribute('aria-expanded', 'false');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
   }
-  function open(){
-    dropdown.classList.add('is-open');
-    toggle.setAttribute('aria-expanded', 'true');
+  function closeAll(){
+    dropdowns.forEach(close);
   }
 
-  toggle.addEventListener('click', function(e){
-    e.stopPropagation();
-    if (dropdown.classList.contains('is-open')) close(); else open();
-  });
+  dropdowns.forEach(function(dropdown){
+    var toggle = dropdown.querySelector('.footer-nav-toggle');
+    if (!toggle) return;
 
-  dropdown.querySelectorAll('.footer-dropdown-menu a').forEach(function(link){
-    link.addEventListener('click', close);
+    toggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = dropdown.classList.contains('is-open');
+      closeAll();
+      if (!wasOpen){
+        dropdown.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    dropdown.querySelectorAll('.footer-dropdown-menu a').forEach(function(link){
+      link.addEventListener('click', closeAll);
+    });
   });
 
   document.addEventListener('click', function(e){
-    if (!dropdown.contains(e.target)) close();
+    dropdowns.forEach(function(dropdown){
+      if (!dropdown.contains(e.target)) close(dropdown);
+    });
   });
 
   document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape') close();
+    if (e.key === 'Escape') closeAll();
   });
 })();
 
