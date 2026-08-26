@@ -175,6 +175,7 @@
     transition:opacity .3s ease;
   }
   .contact-note.is-visible{ opacity:1; }
+  .contact-note.is-error{ color:#ff5c5c; }
 
   .events-foot{
     margin-top:clamp(40px, 6vw, 72px);
@@ -607,7 +608,8 @@
 
       <p class="contact-intro">(仮テキスト) NINJA GAMESへのお問い合わせは、以下のフォームよりお気軽にご連絡ください。取材・協賛・出演に関するご相談も承っております。</p>
 
-      <form class="contact-form" id="contactForm" novalidate>
+      <form class="contact-form" id="contactForm" action="https://formspree.io/f/mgawjwpy" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="NINJA GAMES お問い合わせ">
         <div class="contact-field">
           <label for="contactName">お名前<span class="req">*</span></label>
           <input type="text" id="contactName" name="name" autocomplete="name" required>
@@ -746,13 +748,21 @@
 
 <script>
 
-/* ▼ 仮実装。現在は送信内容をどこにも送信せず、成功メッセージを表示するだけです。
-   実際にメールを届けるには、フォーム送信サービス(例: Formspree等)や
-   自前のバックエンドAPIと接続する必要があります。 */
+/* ▼ Formspree( https://formspree.io/f/mgawjwpy )に送信します。 */
 (function(){
   var form = document.getElementById('contactForm');
   var note = document.getElementById('contactNote');
+  var submitBtn = form && form.querySelector('.contact-submit');
   if (!form) return;
+
+  var submitLabel = submitBtn ? submitBtn.textContent : '';
+
+  function showNote(text, isError){
+    if (!note) return;
+    note.textContent = text;
+    note.classList.add('is-visible');
+    note.classList.toggle('is-error', !!isError);
+  }
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -760,12 +770,39 @@
       form.reportValidity();
       return;
     }
-    form.reset();
-    form.hidden = true;
-    if (note){
-      note.textContent = 'お問い合わせありがとうございます。内容を確認の上、担当者よりご連絡いたします。';
-      note.classList.add('is-visible');
+
+    if (submitBtn){
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送信中...';
     }
+
+    fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function(response){
+      if (response.ok){
+        form.reset();
+        form.hidden = true;
+        showNote('お問い合わせありがとうございます。内容を確認の上、担当者よりご連絡いたします。', false);
+      } else {
+        response.json().then(function(data){
+          var message = (data && data.errors && data.errors.length) ?
+            data.errors.map(function(err){ return err.message; }).join(' ') :
+            '送信に失敗しました。お手数ですが時間をおいて再度お試しください。';
+          showNote(message, true);
+        }).catch(function(){
+          showNote('送信に失敗しました。お手数ですが時間をおいて再度お試しください。', true);
+        });
+      }
+    }).catch(function(){
+      showNote('通信エラーが発生しました。お手数ですが時間をおいて再度お試しください。', true);
+    }).finally(function(){
+      if (submitBtn){
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitLabel;
+      }
+    });
   });
 })();
 
