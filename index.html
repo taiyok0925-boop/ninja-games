@@ -556,11 +556,12 @@
     inset:0;
     background:rgba(0,0,0,0.6);
   }
+  /* タイトルだけをこの中に置き、常にカードの中心に来るようにする。
+     説明文・ロゴは position:absolute で外に出し、中心寄せの計算に影響させない */
   .movement-tile-content{
     position:absolute;
     inset:0;
     display:flex;
-    flex-direction:column;
     align-items:center;
     justify-content:center;
     text-align:center;
@@ -576,7 +577,12 @@
     text-transform:uppercase;
   }
   .movement-tile-desc{
-    margin-top:0.55em;
+    position:absolute;
+    left:50%;
+    bottom:24%;
+    transform:translateX(-50%);
+    width:72%;
+    text-align:center;
     color:rgba(255,255,255,0.82);
     font-size:clamp(0.54rem, 0.66vw, 0.64rem);
     line-height:1.4;
@@ -588,17 +594,20 @@
   }
 
   /* ---- カード内に常時表示するロゴ(現状「大会」のPKH/SLHのみ)。
-     ポップ前は少し大きめでカード下寄りに、ポップ後は説明文と並ぶ通常サイズ・位置に戻す ---- */
+     ポップ前は少し大きめでカード下寄りに、ポップ後はタイトルのすぐ下・通常サイズに戻す ---- */
   .movement-tile-logos{
+    position:absolute;
+    left:50%;
+    bottom:14%;
+    transform:translateX(-50%);
     display:flex;
     align-items:center;
     justify-content:center;
     gap:0.6em;
-    margin-top:clamp(28px, 3.4vw, 44px);
-    transition:margin-top .25s ease;
+    transition:bottom .25s ease;
   }
   .movement-tile:hover .movement-tile-logos{
-    margin-top:0.6em;
+    bottom:56%;
   }
   .movement-tile-logos img{
     height:clamp(36px, 4.6vw, 54px);
@@ -613,8 +622,8 @@
   /* ---- カード右下に置く個別リンク(現状ショーケースのお問い合わせのみ) ---- */
   .movement-tile-link{
     position:absolute;
-    right:20%;
-    bottom:16%;
+    right:24%;
+    bottom:11%;
     display:inline-block;
     font-family:'Almarai', sans-serif;
     font-weight:700;
@@ -630,6 +639,40 @@
   }
   .movement-tile:hover .movement-tile-link{
     opacity:1;
+  }
+
+  /* ---- スマホ: 円が小さくなるので、タイトル・ロゴを縮めて中に収まるようにする ---- */
+  @media (max-width:600px){
+    .movement-stage{
+      width:min(94vw, 900px);
+    }
+    .movement-tile-content{
+      padding:8%;
+    }
+    .movement-tile-title{
+      font-size:0.5rem;
+      line-height:1.15;
+    }
+    .movement-tile-desc{
+      font-size:0.42rem;
+      bottom:22%;
+    }
+    .movement-tile-logos{
+      bottom:12%;
+      gap:4px;
+    }
+    .movement-tile:hover .movement-tile-logos{
+      bottom:54%;
+    }
+    .movement-tile-logos img{
+      height:16px;
+    }
+    .movement-tile:hover .movement-tile-logos img{
+      height:14px;
+    }
+    .movement-tile-link{
+      font-size:0.4rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -942,10 +985,38 @@
     }
   }
   @media (max-width:480px){
-    .athlete-grid{ grid-template-columns:1fr; }
+    /* スマホでは2列×2行=4枚が1画面に収まるよう、余白・見出し・カードを詰める */
+    #athletes{ padding-top:clamp(24px, 6vw, 32px); }
+    #crew{ padding-top:clamp(16px, 4vw, 20px); }
+    .athletes-heading{
+      font-size:clamp(1.15rem, 5.6vw, 1.4rem);
+      margin-bottom:clamp(14px, 4vw, 20px);
+    }
+    .athlete-grid{
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+    }
+    .athlete-card{
+      aspect-ratio:3 / 3.5;
+    }
+    .athlete-card-badge{
+      font-size:0.56rem;
+      padding:0.45em 0.6em;
+    }
+    .athlete-card-body{
+      padding:8px 10px;
+    }
+    .athlete-card-name{
+      font-size:0.74rem;
+      line-height:1.15;
+    }
+    .athlete-card-sub{
+      font-size:0.6rem;
+      margin-top:0.35em;
+    }
     #crewGrid .athlete-card{
-      flex-basis:100%;
-      max-width:100%;
+      flex-basis:calc((100% - 10px) / 2);
+      max-width:calc((100% - 10px) / 2);
     }
   }
   @media (prefers-reduced-motion: reduce){
@@ -1084,6 +1155,7 @@
     font-size:clamp(0.8rem, 0.95vw, 0.95rem);
     color:rgba(255,255,255,0.75);
     text-decoration:none;
+    text-transform:uppercase;
     transition:color .3s ease;
   }
   .footer-nav a:hover{ color:#fff; }
@@ -1100,6 +1172,7 @@
     font-family:inherit;
     font-size:clamp(0.8rem, 0.95vw, 0.95rem);
     color:rgba(255,255,255,0.75);
+    text-transform:uppercase;
     cursor:pointer;
     transition:color .3s ease;
   }
@@ -1133,6 +1206,7 @@
     font-size:clamp(0.8rem, 0.95vw, 0.95rem);
     color:rgba(255,255,255,0.75);
     text-decoration:none;
+    text-transform:uppercase;
     white-space:nowrap;
     transition:color .3s ease;
   }
@@ -1196,7 +1270,7 @@
   /* ---- 矢印: フッターの横幅いっぱい。細いラインの先に大きい三角形の矢じり ---- */
   .footer-tagline-arrow-row{
     width:100%;
-    margin-top:clamp(10px, 1.4vw, 18px);
+    margin-top:0;
     height:clamp(26px, 4.2vw, 60px);
     opacity:0;
     transform:translateX(-14vw);
@@ -1447,8 +1521,9 @@
 
   <section class="hero" id="hero">
 
-    <!-- ① 背景動画 -->
+    <!-- ① 背景動画(スマホ幅では縦向きのGoPro素材に差し替え) -->
     <video class="hero-video" autoplay loop muted playsinline>
+      <source src="assets/hero-video-mobile.mp4" type="video/mp4" media="(max-width: 700px)">
       <source src="assets/hero-video.mp4" type="video/mp4">
     </video>
 
@@ -2323,16 +2398,16 @@ var HEROS_SHOWCASE = [
   if (!logo || !inner) return;
 
   function align(){
-    if (window.matchMedia('(max-width:900px)').matches){
-      logo.style.transform = '';
-      return;
-    }
-    logo.style.transform = '';
     var innerRect = inner.getBoundingClientRect();
     var tipX = innerRect.left + innerRect.width * (735 / 750);
     // 幅は translateX の影響を受けないので、アニメーション中でも安全に測れる
     var logoWidth = logo.getBoundingClientRect().width;
-    var logoNaturalCenterX = innerRect.right - logoWidth / 2;
+    // PC: ロゴは右寄せが基準位置。モバイル(900px以下): footer-middle が縦積みになり
+    // ロゴは左寄せが基準位置になるため、どちらの基準位置から矢印の先端まで動かすか切り替える
+    var isStacked = window.matchMedia('(max-width:900px)').matches;
+    var logoNaturalCenterX = isStacked ?
+      (innerRect.left + logoWidth / 2) :
+      (innerRect.right - logoWidth / 2);
     var delta = tipX - logoNaturalCenterX;
     logo.style.transform = 'translateX(' + delta + 'px)';
   }

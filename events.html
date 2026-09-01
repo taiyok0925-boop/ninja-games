@@ -360,6 +360,7 @@
     font-size:clamp(0.8rem, 0.95vw, 0.95rem);
     color:rgba(255,255,255,0.75);
     text-decoration:none;
+    text-transform:uppercase;
     transition:color .3s ease;
   }
   .footer-nav a:hover{ color:#fff; }
@@ -376,6 +377,7 @@
     font-family:inherit;
     font-size:clamp(0.8rem, 0.95vw, 0.95rem);
     color:rgba(255,255,255,0.75);
+    text-transform:uppercase;
     cursor:pointer;
     transition:color .3s ease;
   }
@@ -409,6 +411,7 @@
     font-size:clamp(0.8rem, 0.95vw, 0.95rem);
     color:rgba(255,255,255,0.75);
     text-decoration:none;
+    text-transform:uppercase;
     white-space:nowrap;
     transition:color .3s ease;
   }
@@ -472,7 +475,7 @@
   /* ---- 矢印: フッターの横幅いっぱい。細いラインの先に大きい三角形の矢じり ---- */
   .footer-tagline-arrow-row{
     width:100%;
-    margin-top:clamp(10px, 1.4vw, 18px);
+    margin-top:0;
     height:clamp(26px, 4.2vw, 60px);
     opacity:0;
     transform:translateX(-14vw);
@@ -882,16 +885,16 @@ var SHOWCASE = {
   if (!logo || !inner) return;
 
   function align(){
-    if (window.matchMedia('(max-width:900px)').matches){
-      logo.style.transform = '';
-      return;
-    }
-    logo.style.transform = '';
     var innerRect = inner.getBoundingClientRect();
     var tipX = innerRect.left + innerRect.width * (735 / 750);
     // 幅は translateX の影響を受けないので、アニメーション中でも安全に測れる
     var logoWidth = logo.getBoundingClientRect().width;
-    var logoNaturalCenterX = innerRect.right - logoWidth / 2;
+    // PC: ロゴは右寄せが基準位置。モバイル(900px以下): footer-middle が縦積みになり
+    // ロゴは左寄せが基準位置になるため、どちらの基準位置から矢印の先端まで動かすか切り替える
+    var isStacked = window.matchMedia('(max-width:900px)').matches;
+    var logoNaturalCenterX = isStacked ?
+      (innerRect.left + logoWidth / 2) :
+      (innerRect.right - logoWidth / 2);
     var delta = tipX - logoNaturalCenterX;
     logo.style.transform = 'translateX(' + delta + 'px)';
   }
