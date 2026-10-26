@@ -77,6 +77,120 @@
   }
   .intro-logo path{ fill:#fff; }
 
+  /* ===================== ハンバーガーメニュー(全ページ共通、常に右上に固定) ===================== */
+  .hamburger-btn{
+    position:fixed;
+    top:clamp(16px, 2.4vw, 28px);
+    right:clamp(16px, 2.4vw, 28px);
+    z-index:93;
+    width:44px;
+    height:44px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    background:none;
+    border:none;
+    cursor:pointer;
+  }
+  .hamburger-btn span{
+    display:block;
+    width:22px;
+    height:2px;
+    background:#fff;
+    transition:background-color .3s ease;
+  }
+  .hamburger-btn:hover span{
+    background:#E8FF00;
+  }
+
+  .hamburger-overlay{
+    position:fixed;
+    inset:0;
+    z-index:91;
+    background:rgba(0,0,0,0.6);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .3s ease, visibility .3s ease;
+  }
+  .hamburger-overlay.is-open{
+    opacity:1;
+    visibility:visible;
+  }
+
+  .hamburger-menu{
+    position:fixed;
+    top:0;
+    right:0;
+    height:100%;
+    width:min(320px, 82vw);
+    background:#000;
+    border-left:1px solid rgba(255,255,255,0.15);
+    z-index:92;
+    padding:clamp(72px, 11vw, 96px) clamp(24px, 5vw, 36px) 32px;
+    transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.16,.84,.44,1);
+    overflow-y:auto;
+  }
+  .hamburger-menu.is-open{
+    transform:translateX(0);
+  }
+  /* スマホ: メニューは最低限の幅だけ開き、ページが左側に大きく見えるようにする */
+  @media (max-width:700px){
+    .hamburger-menu{
+      width:min(230px, 60vw);
+      padding-left:24px;
+      padding-right:20px;
+    }
+  }
+  .hamburger-nav{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:clamp(20px, 3.4vw, 28px);
+  }
+  .hamburger-nav > li > a,
+  .hamburger-nav-label{
+    display:inline-block;
+    font-family:'Almarai', sans-serif;
+    font-weight:800;
+    font-size:1.05rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#fff;
+    text-decoration:none;
+    transition:color .3s ease;
+  }
+  .hamburger-nav > li > a:hover{ color:#E8FF00; }
+  .hamburger-nav-group ul{
+    list-style:none;
+    margin-top:12px;
+    padding-left:16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    border-left:1px solid rgba(255,255,255,0.2);
+  }
+  .hamburger-nav-group ul a{
+    display:inline-block;
+    padding-left:14px;
+    font-family:'Almarai', sans-serif;
+    font-weight:700;
+    font-size:0.82rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.7);
+    text-decoration:none;
+    transition:color .3s ease;
+  }
+  .hamburger-nav-group ul a:hover{ color:#E8FF00; }
+
+  @media (prefers-reduced-motion: reduce){
+    .hamburger-overlay,
+    .hamburger-menu{ transition:none !important; }
+  }
+
   /* ① 背景動画 */
   .hero-video{
     position:absolute;
@@ -196,6 +310,13 @@
     font-size:clamp(2.2rem, 6vw, 4rem);
     color:#fff;
   }
+  .concept-heading img{
+    display:block;
+    margin:0 auto;
+    width:clamp(240px, 46vw, 420px);
+    max-width:100%;
+    height:auto;
+  }
   .concept-body{
     margin:clamp(8px, 1.5vw, 14px) auto 0;
     max-width:520px;
@@ -207,48 +328,14 @@
     line-height:2;
     color:rgba(255,255,255,0.8);
   }
+  .concept-inline-logo{
+    display:inline-block;
+    height:1.3em;
+    width:auto;
+    vertical-align:middle;
+  }
   .concept-body p + p{
     margin-top:0.2em;
-  }
-
-  /* ===================== LOGO MARQUEE ===================== */
-  .logo-marquee{
-    overflow:hidden;
-    position:relative;
-    z-index:1;
-  }
-  .logo-marquee.top{ margin-bottom:clamp(16px, 2.5vw, 24px); }
-  .logo-marquee.bottom{ margin-top:clamp(16px, 2.5vw, 24px); }
-  .logo-marquee-track{
-    display:flex;
-    align-items:center;
-    width:max-content;
-    gap:clamp(32px, 5vw, 56px);
-    will-change:transform;
-  }
-  .logo-marquee-track svg{
-    flex:0 0 auto;
-    display:block;
-    height:clamp(28px, 4vw, 42px);
-    width:auto;
-  }
-  /* ロゴマークのみ(ninja_logo_white_mark_only.svg)は viewBox で判別してテキストロゴより一回り大きく */
-  .logo-marquee-track svg[viewBox="0 0 100.096 112.249"]{
-    height:clamp(38px, 5.4vw, 58px);
-  }
-  .logo-marquee-track path{ fill:#fff; }
-  .logo-marquee-track.scroll-right{ animation:marqueeRight 60s linear infinite; }
-  .logo-marquee-track.scroll-left{ animation:marqueeLeft 60s linear infinite; }
-  @keyframes marqueeRight{
-    from{ transform:translateX(-50%); }
-    to{ transform:translateX(0); }
-  }
-  @keyframes marqueeLeft{
-    from{ transform:translateX(0); }
-    to{ transform:translateX(-50%); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .logo-marquee-track{ animation:none !important; }
   }
 
   /* ===================== UPCOMING SHOW CASE ===================== */
@@ -269,7 +356,7 @@
     letter-spacing:0.02em;
     text-transform:uppercase;
     font-size:clamp(1.7rem, 3.6vw, 2.8rem);
-    color:#E8FF00;
+    color:#fff;
     margin-bottom:clamp(12px, 1.4vw, 20px);
   }
 
@@ -567,6 +654,10 @@
     text-align:center;
     padding:14%;
   }
+  /* ---- ポップ時(ホバー/タップで拡大)は説明文が下に出るので、タイトルを円の上部に逃がして被らないようにする ---- */
+  .movement-tile:hover .movement-tile-content{
+    align-items:flex-start;
+  }
   .movement-tile-title{
     font-family:'Unbounded', sans-serif;
     font-weight:800;
@@ -649,20 +740,27 @@
     .movement-tile-content{
       padding:8%;
     }
+    /* サークルは上端に近いほど横幅が狭くなるため、ポップ時のタイトルは上端ギリギリではなく
+       少し下げた位置から始め、2行になっても円の丸みで文字が欠けないようにする */
+    .movement-tile:hover .movement-tile-content{
+      padding-top:24%;
+    }
     .movement-tile-title{
       font-size:0.5rem;
       line-height:1.15;
     }
     .movement-tile-desc{
-      font-size:0.42rem;
-      bottom:22%;
+      width:94%;
+      font-size:0.4rem;
+      line-height:1.3;
+      bottom:19%;
     }
     .movement-tile-logos{
       bottom:12%;
       gap:4px;
     }
     .movement-tile:hover .movement-tile-logos{
-      bottom:54%;
+      bottom:58%;
     }
     .movement-tile-logos img{
       height:16px;
@@ -671,7 +769,17 @@
       height:14px;
     }
     .movement-tile-link{
+      right:50%;
+      bottom:2%;
+      transform:translateX(50%);
       font-size:0.4rem;
+    }
+    /* ---- 左右端のタイルは、ポップ時に画面中央側へ少し寄せて画面端で見切れないようにする ---- */
+    .movement-tile--edge-left:hover{
+      transform:translate(calc(-50% + 34px), -50%) scale(1.75);
+    }
+    .movement-tile--edge-right:hover{
+      transform:translate(calc(-50% - 34px), -50%) scale(1.75);
     }
   }
 
@@ -797,6 +905,10 @@
     .heros-info-text{
       padding:clamp(28px, 6vw, 44px) clamp(20px, 5vw, 32px);
     }
+    /* ロゴ(白背景の枠)は画面の中央に置く */
+    .heros-info-logo{
+      justify-content:center;
+    }
     /* 絶対配置のままだと本文の最終行と被るので、通常フローで本文の下に右寄せで置く */
     .heros-info-text{
       flex-direction:column;
@@ -841,7 +953,7 @@
     position:relative;
     display:flex;
     flex-direction:column;
-    aspect-ratio:3 / 4.3;
+    aspect-ratio:3 / 3.9;
     overflow:hidden;
     background:#000;
     text-decoration:none;
@@ -928,12 +1040,6 @@
     text-transform:uppercase;
     color:#fff;
   }
-  .athlete-card-sub{
-    margin-top:0.5em;
-    font-size:clamp(0.7rem, 0.9vw, 0.85rem);
-    letter-spacing:0.05em;
-    color:rgba(255,255,255,0.5);
-  }
 
   /* ---- NINJA ATHLETE: 一覧の下にある「Find All Ninja」リンク ---- */
   .athletes-cta{
@@ -997,7 +1103,7 @@
       gap:10px;
     }
     .athlete-card{
-      aspect-ratio:3 / 3.5;
+      aspect-ratio:3 / 3.15;
     }
     .athlete-card-badge{
       font-size:0.56rem;
@@ -1009,10 +1115,6 @@
     .athlete-card-name{
       font-size:0.74rem;
       line-height:1.15;
-    }
-    .athlete-card-sub{
-      font-size:0.6rem;
-      margin-top:0.35em;
     }
     #crewGrid .athlete-card{
       flex-basis:calc((100% - 10px) / 2);
@@ -1332,15 +1434,20 @@
   }
 
   @media (max-width:700px){
+    /* スマホ: 会社情報を左、SNSを右に横並び(SNSを上に出さず、下の余白を詰める) */
     .footer-bottom-row{
-      flex-direction:column;
-      align-items:center;
-      gap:clamp(14px, 2vw, 22px);
+      flex-direction:row;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:clamp(12px, 3vw, 20px);
     }
     .footer-company{
+      flex:1 1 auto;
+      min-width:0;
+      text-align:left;
+    }
+    .footer-social{
       flex:0 0 auto;
-      text-align:center;
-      order:2;
     }
     .footer-bottom-spacer{ display:none; }
   }
@@ -1364,15 +1471,41 @@
 
   /* ---- 幅が狭いとナビが2行に折り返し、絶対配置のPKH/SLHロゴと重なるので通常フローに戻す ---- */
   @media (max-width:700px){
+    /* スマホ: ナビの直下(Contactの下)にPKH/SLHロゴを右詰めで置く */
     .footer-topnav-row{
-      flex-wrap:wrap;
-      row-gap:clamp(14px, 3vw, 20px);
+      flex-direction:column;
+      align-items:stretch;
+      row-gap:clamp(10px, 2.5vw, 16px);
+    }
+    .footer-middle{
+      /* スマホでもタグラインの右にロゴを置き、矢印はHAPPENのすぐ下に来るよう横並びに戻す */
+      flex-direction:row;
+      align-items:stretch;
+      gap:clamp(12px, 3vw, 24px);
+    }
+    .footer-logo-cluster{
+      flex:1 1 auto;
+      width:auto;
+      margin-top:0;
+      justify-content:flex-end;
+    }
+    /* ナビは折り返さず、画面幅いっぱいに1列で収める */
+    .footer-nav{
+      width:100%;
+      flex-wrap:nowrap;
+      justify-content:space-between;
+      gap:2vw;
+    }
+    .footer-nav a,
+    .footer-nav-toggle{
+      font-size:clamp(0.6rem, 2.9vw, 0.78rem);
+      white-space:nowrap;
     }
     .footer-logos-row{
       position:static;
       transform:none;
       width:100%;
-      justify-content:flex-start;
+      justify-content:flex-end;
     }
     .footer-logo-pkh,
     .footer-logo-slh{
@@ -1477,6 +1610,36 @@
 
 
 
+
+  <!-- ============ ハンバーガーメニュー ============ -->
+  <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="hamburgerMenu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="hamburger-overlay" id="hamburgerOverlay"></div>
+  <nav class="hamburger-menu" id="hamburgerMenu" aria-hidden="true">
+    <ul class="hamburger-nav">
+      <li><a href="index.html">HOME</a></li>
+      <li><a href="index.html#concept">ABOUT</a></li>
+      <li class="hamburger-nav-group">
+        <span class="hamburger-nav-label">ATHLETES</span>
+        <ul>
+          <li><a href="athlete.html">ALL ATHLETES</a></li>
+          <li><a href="index.html#crew">CREWS</a></li>
+        </ul>
+      </li>
+      <li class="hamburger-nav-group">
+        <span class="hamburger-nav-label">SHOWCASE</span>
+        <ul>
+          <li><a href="index.html#upcoming">UPCOMING</a></li>
+          <li><a href="events.html">PAST</a></li>
+        </ul>
+      </li>
+      <li><a href="sponsor.html">SPONSOR</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </nav>
 
   <!-- ============ INTRO ============ -->
   <div class="intro" id="intro">
@@ -1608,63 +1771,6 @@
   <!-- ============ CONCEPT ============ -->
   <section class="concept" id="concept">
 
-    <div class="logo-marquee top">
-    <div class="logo-marquee-track scroll-right">
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-        </div>
-    </div>
-
     <svg class="concept-watermark" viewBox="64.94259643554688 87.71675872802734 87.58940124511719 87.58914947509766" aria-hidden="true">
       <g>
 <path
@@ -1696,68 +1802,11 @@
        d="m 77.769736,108.42679 v 7.62952 l 3.81494,-3.81458 1.31374,-1.3141 1.31375,1.3141 0.98989,0.98954 1.85808,1.85808 2.40736,2.40771 1.31409,1.31374 7.13176,7.13211 h 10.510664 l -12.387084,-12.38744 -1.3141,-1.31374 -5.25533,-5.25533 -1.31375,-1.3141 -1.09361,-1.09361 -1.85808,-1.85808 -1.79035,-1.78999 -0.38029,-0.387 h -1.86055 -3.40113 l -2.62784,2.62784 2.62784,2.62784 z" />
       </g>
     </svg>
-    <h2 class="concept-heading">NINJA GAMES</h2>
+    <h2 class="concept-heading"><img src="assets/ninja-text-horizontal.svg" alt="NINJA GAMES"></h2>
     <div class="concept-body">
       <p>境界を超える。</p>
       <p>エンジンなどの動力も使わない。道具はシンプルに、使うのは、己の身体だけ。</p>
-      <p>まさに現代の“忍者”を体現する舞台。　それが<br>NINJA GAMES</p>
-    </div>
-
-    <div class="logo-marquee bottom">
-    <div class="logo-marquee-track scroll-left">
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-      <svg viewBox="0 0 76.672 47.099"><use href="#ninjaTextLogoSymbol"></use></svg>
-      <svg viewBox="0 0 100.096 112.249"><use href="#ninjaLogoMarkOnlySymbol"></use></svg>
-        </div>
+      <p>まさに現代の“忍者”を体現する舞台。　それが<br><img class="concept-inline-logo" src="assets/ninja-text-horizontal.svg" alt="NINJA GAMES"></p>
     </div>
   </section>
 
@@ -1765,10 +1814,10 @@
   <!-- 中身は下部スクリプトの ATHLETES 設定(assets/athletes-data.js)から生成される -->
   <section class="athletes" id="athletes">
     <div class="athletes-inner">
-      <h2 class="athletes-heading">FEATURED NINJA ATHLETE</h2>
+      <h2 class="athletes-heading">FEATURED NINJA ATHLETES</h2>
       <div class="athlete-grid" id="athleteGrid"></div>
       <div class="athletes-cta">
-        <a class="athletes-cta-link" href="athlete.html">Find All Ninja Athlete<span>&rarr;</span></a>
+        <a class="athletes-cta-link" href="athlete.html">Find All Ninja Athletes<span>&rarr;</span></a>
       </div>
     </div>
   </section>
@@ -1777,7 +1826,7 @@
   <!-- 中身は下部スクリプトの CREW 設定から生成される -->
   <section class="athletes" id="crew">
     <div class="athletes-inner">
-      <h2 class="athletes-heading">NINJA CREW</h2>
+      <h2 class="athletes-heading">NINJA CREWS</h2>
       <div class="athlete-grid" id="crewGrid"></div>
     </div>
   </section>
@@ -1839,19 +1888,18 @@
         <div class="footer-topnav-row">
           <ul class="footer-nav">
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="index.html#concept">About</a></li>
             <li class="footer-nav-dropdown">
-              <button type="button" class="footer-nav-toggle" aria-expanded="false" aria-haspopup="true">Athlete</button>
+              <button type="button" class="footer-nav-toggle" aria-expanded="false" aria-haspopup="true">Athletes</button>
               <ul class="footer-dropdown-menu">
-                <li><a href="athlete.html">All Athlete</a></li>
-                <li><a href="index.html#crew">Crew</a></li>
+                <li><a href="athlete.html">All Athletes</a></li>
+                <li><a href="index.html#crew">Crews</a></li>
               </ul>
             </li>
             <li class="footer-nav-dropdown">
               <button type="button" class="footer-nav-toggle" aria-expanded="false" aria-haspopup="true">Showcase</button>
               <ul class="footer-dropdown-menu">
                 <li><a href="index.html#upcoming">Upcoming</a></li>
-                <li><a href="events.html">Past</a></li>
               </ul>
             </li>
             <li><a href="sponsor.html">Sponsor</a></li>
@@ -1897,11 +1945,8 @@
           <a href="https://www.instagram.com/ninjagames_official?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==&amp;igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2.1.25 2.8.53a5.7 5.7 0 0 1 2.1 1.36 5.7 5.7 0 0 1 1.36 2.1c.28.7.47 1.6.53 2.8.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2.1-.53 2.8a5.7 5.7 0 0 1-1.36 2.1 5.7 5.7 0 0 1-2.1 1.36c-.7.28-1.6.47-2.8.53-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2.1-.25-2.8-.53a5.7 5.7 0 0 1-2.1-1.36 5.7 5.7 0 0 1-1.36-2.1c-.28-.7-.47-1.6-.53-2.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2.1.53-2.8a5.7 5.7 0 0 1 1.36-2.1A5.7 5.7 0 0 1 6.26 2.8c.7-.28 1.6-.47 2.8-.53C10.4 2.2 10.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.51.01-4.75.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94C2.9 9.31 2.89 9.68 2.89 12s.01 2.69.07 3.93c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.61.07-3.93s-.01-2.69-.07-3.93c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36C15.51 4.01 15.14 4 12 4Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm4.6-2a1.03 1.03 0 1 1 0 2.06 1.03 1.03 0 0 1 0-2.06Z"/></svg>
           </a>
-          <a href="#" aria-label="X">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 3h4.3l4.1 5.6L16.6 3h3.2l-6 7.6L20.5 21h-4.3l-4.5-6.1L6.4 21H3.2l6.4-8.1L3.5 3Zm2.3 1.6 9.9 14.8h2L7.8 4.6h-2Z"/></svg>
-          </a>
-          <a href="#" aria-label="YouTube">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5C0 8.4 0 12 0 12s0 3.6.5 5.5a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.5.5-5.5s0-3.6-.5-5.5ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
           </a>
         </div>
         <div class="footer-bottom-spacer" aria-hidden="true"></div>
@@ -1912,6 +1957,38 @@
 
 <script src="assets/athletes-data.js"></script>
 <script>
+/* ---------- ハンバーガーメニュー: 常に右上に固定、クリックで右からスライドイン ---------- */
+(function(){
+  var btn = document.getElementById('hamburgerBtn');
+  var menu = document.getElementById('hamburgerMenu');
+  var overlay = document.getElementById('hamburgerOverlay');
+  if (!btn || !menu || !overlay) return;
+
+  function openMenu(){
+    menu.classList.add('is-open');
+    overlay.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+  }
+  function closeMenu(){
+    menu.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+  }
+
+  btn.addEventListener('click', function(){
+    if (menu.classList.contains('is-open')) closeMenu(); else openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeMenu();
+  });
+  menu.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', closeMenu);
+  });
+})();
+
 (function(){
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var intro = document.getElementById('intro');
@@ -2027,7 +2104,6 @@
         '</div>' +
         '<div class="athlete-card-body">' +
           '<h3 class="athlete-card-name">' + escapeAttr(a.name) + '</h3>' +
-          (a.hometown ? '<p class="athlete-card-sub">' + escapeAttr(a.hometown) + '</p>' : '') +
         '</div>' +
       '</a>';
   }).join('');
@@ -2068,7 +2144,6 @@
         '</div>' +
         '<div class="athlete-card-body">' +
           '<h3 class="athlete-card-name">' + escapeAttr(c.name) + '</h3>' +
-          (c.hometown ? '<p class="athlete-card-sub">' + escapeAttr(c.hometown) + '</p>' : '') +
         '</div>' +
       '</div>';
   }).join('');
@@ -2176,8 +2251,10 @@ var UPCOMING = {
       UPCOMING.allShowCaseLabel + '<span>&rarr;</span>' +
     '</a>';
 
-  // 見出し(一番上、カードより前)→ 左に大きいカード → 右にテキスト+小さい2枚目のカード+All Show Case。
-  // 1024px 以下ではこの DOM 順のまま縦に積まれる(見出し→カード1→テキスト→カード2→All Show Case)。
+  // 見出し(一番上、カードより前)→ 左に大きいカード → 右にテキスト+小さい2枚目のカード。
+  // 1024px 以下ではこの DOM 順のまま縦に積まれる(見出し→カード1→テキスト→カード2)。
+  // ▼ All Show Case リンクはいったん非表示(events.html自体は削除していないので、再度表示する場合は
+  //   copyHtml + cardHtml(...) の直後に `+ allHtml` を追加すれば復活します)。
   grid.innerHTML =
     '<h2 class="upcoming-heading">' + UPCOMING.eyebrow + '</h2>' +
     '<div class="upcoming-row">' +
@@ -2185,7 +2262,6 @@ var UPCOMING = {
       '<div class="upcoming-side">' +
         copyHtml +
         cardHtml(UPCOMING.events[1], 'upcoming-card-right') +
-        allHtml +
       '</div>' +
     '</div>';
 })();
@@ -2230,8 +2306,11 @@ var MOVEMENT_PROJECTS = [
 
   var tilesHtml = MOVEMENT_PROJECTS.map(function(proj, i){
     var p = points[i];
+    /* スマホでポップ(1.75倍拡大)したときに画面端で見切れないよう、左右の頂点タイルだけ
+       拡大方向を画面中央側に逃がすためのクラスを付ける(JSで判定し、実際の位置調整はCSS側) */
+    var edgeClass = p.x < 20 ? ' movement-tile--edge-left' : (p.x > 80 ? ' movement-tile--edge-right' : '');
     return '' +
-      '<div class="movement-tile" style="left:' + p.x.toFixed(2) + '%; top:' + p.y.toFixed(2) + '%;">' +
+      '<div class="movement-tile' + edgeClass + '" style="left:' + p.x.toFixed(2) + '%; top:' + p.y.toFixed(2) + '%;">' +
         '<img class="movement-tile-photo" src="' + escapeAttr(proj.photo) + '" alt="" loading="lazy">' +
         '<span class="movement-tile-overlay"></span>' +
         '<div class="movement-tile-content">' +
@@ -2403,12 +2482,14 @@ var HEROS_SHOWCASE = [
     // 幅は translateX の影響を受けないので、アニメーション中でも安全に測れる
     var logoWidth = logo.getBoundingClientRect().width;
     // PC: ロゴは右寄せが基準位置。モバイル(900px以下): footer-middle が縦積みになり
-    // ロゴは左寄せが基準位置になるため、どちらの基準位置から矢印の先端まで動かすか切り替える
-    var isStacked = window.matchMedia('(max-width:900px)').matches;
+    // ロゴは左寄せが基準位置になるため(700px以下は横並びに戻すので対象外)、どちらの基準位置から矢印の先端まで動かすか切り替える
+    var isStacked = window.matchMedia('(min-width:701px) and (max-width:900px)').matches;
     var logoNaturalCenterX = isStacked ?
       (innerRect.left + logoWidth / 2) :
       (innerRect.right - logoWidth / 2);
     var delta = tipX - logoNaturalCenterX;
+    // スマホ(700px以下): ロゴが右にはみ出さないよう、右端をフッターの内側に収める
+    if (window.matchMedia('(max-width:700px)').matches) delta = Math.min(delta, 0);
     logo.style.transform = 'translateX(' + delta + 'px)';
   }
 
@@ -2428,26 +2509,27 @@ var HEROS_SHOWCASE = [
   var behavior = reduceMotion ? 'auto' : 'smooth';
 
   function interceptToScroll(selector, targetEl, hash){
-    var link = document.querySelector(selector);
-    if (!link || !targetEl) return;
-    link.addEventListener('click', function(e){
-      e.preventDefault();
-      targetEl.scrollIntoView({ behavior: behavior, block: 'start' });
-      if (history.pushState) history.pushState(null, '', hash);
+    if (!targetEl) return;
+    document.querySelectorAll(selector).forEach(function(link){
+      link.addEventListener('click', function(e){
+        e.preventDefault();
+        targetEl.scrollIntoView({ behavior: behavior, block: 'start' });
+        if (history.pushState) history.pushState(null, '', hash);
+      });
     });
   }
 
-  var homeLink = document.querySelector('.footer-nav a[href="index.html"]');
-  if (homeLink){
+  document.querySelectorAll('.footer-nav a[href="index.html"], .hamburger-nav a[href="index.html"]').forEach(function(homeLink){
     homeLink.addEventListener('click', function(e){
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: behavior });
       if (history.pushState) history.pushState(null, '', location.pathname + location.search);
     });
-  }
+  });
 
-  interceptToScroll('.footer-nav a[href="index.html#upcoming"]', document.getElementById('upcoming'), '#upcoming');
-  interceptToScroll('.footer-nav a[href="index.html#crew"]', document.getElementById('crew'), '#crew');
+  interceptToScroll('.footer-nav a[href="index.html#concept"], .hamburger-nav a[href="index.html#concept"]', document.getElementById('concept'), '#concept');
+  interceptToScroll('.footer-nav a[href="index.html#upcoming"], .hamburger-nav a[href="index.html#upcoming"]', document.getElementById('upcoming'), '#upcoming');
+  interceptToScroll('.footer-nav a[href="index.html#crew"], .hamburger-nav a[href="index.html#crew"]', document.getElementById('crew'), '#crew');
   interceptToScroll('a[href="index.html#parkour-heros"]', document.getElementById('parkour-heros'), '#parkour-heros');
   interceptToScroll('a[href="index.html#slackline-heros"]', document.getElementById('slackline-heros'), '#slackline-heros');
 })();

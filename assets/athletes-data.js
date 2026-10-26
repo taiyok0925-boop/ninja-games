@@ -8,10 +8,7 @@ var ATHLETES = [
     discipline: 'TRIAL',
     hometown: 'Tokyo, Japan',
     photo: 'assets/athlete-tomomi-nishikubo.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   },
   {
     id: 5,
@@ -19,10 +16,7 @@ var ATHLETES = [
     discipline: 'PARKOUR',
     hometown: 'Sapporo, Japan',
     photo: 'assets/athlete-takahumi-kimoto.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   },
   {
     id: 6,
@@ -30,10 +24,7 @@ var ATHLETES = [
     discipline: 'SLACKLINE',
     hometown: 'Yokohama, Japan',
     photo: 'assets/athlete-itsuki-hosoe.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   },
   {
     id: 3,
@@ -41,10 +32,7 @@ var ATHLETES = [
     discipline: 'BMX',
     hometown: 'Nagoya, Japan',
     photo: 'assets/athlete-daichi-teshigahara.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   },
   {
     id: 2,
@@ -52,10 +40,7 @@ var ATHLETES = [
     discipline: 'SKATEBOARD',
     hometown: 'Osaka, Japan',
     photo: 'assets/athlete-daisuke-nakaura.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   },
   {
     id: 4,
@@ -63,10 +48,7 @@ var ATHLETES = [
     discipline: 'TRIAL',
     hometown: 'Fukuoka, Japan',
     photo: 'assets/athlete-yuki-kishi.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   },
   {
     id: 8,
@@ -74,10 +56,7 @@ var ATHLETES = [
     discipline: 'TRIAL',
     hometown: 'Kyoto, Japan',
     photo: 'assets/athlete-ayato-kimura.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   },
   {
     id: 9,
@@ -85,9 +64,6 @@ var ATHLETES = [
     discipline: 'BREAKDANCE',
     hometown: 'Sendai, Japan',
     photo: 'assets/athlete-showsaku-amano.jpg',
-    bio: [
-      '(仮テキスト) ここに選手のプロフィールが入ります。競技を始めたきっかけや、これまでの歩みなどを紹介します。',
-      '(仮テキスト) 大会実績や得意技、今後の目標などを記載できます。'
-    ]
+    bio: []
   }
 ];
