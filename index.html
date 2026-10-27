@@ -453,6 +453,11 @@
   .event-card:hover{ transform:translateY(-4px); }
   .event-card:hover .event-card-photo{ opacity:0.8; transform:scale(1.04); }
 
+  /* ---- まだPast Showcaseへのリンクを無効化している間は、クリックできるように見えないようにする ---- */
+  .event-card--disabled{ cursor:default; }
+  .event-card--disabled:hover{ transform:none; }
+  .event-card--disabled:hover .event-card-photo{ transform:none; }
+
   /* 左上: 円形ロゴバッジ */
   .event-badge-logo{
     position:absolute;
@@ -517,6 +522,28 @@
     height:1em;
     flex:0 0 auto;
     fill:currentColor;
+  }
+
+  /* ---- まだ日程・会場未確定のショーケース: 写真はそのまま少し暗くし、中央にComing Soonを置く ---- */
+  .event-card--coming-soon .event-card-photo{
+    opacity:0.4;
+  }
+  .event-card--coming-soon:hover .event-card-photo{
+    opacity:0.5;
+  }
+  .event-card-comingsoon{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    font-family:'Almarai', sans-serif;
+    font-weight:800;
+    font-size:clamp(1.1rem, 1.8vw, 1.9rem);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.65);
+    text-align:center;
+    white-space:nowrap;
   }
 
   /* ---- All Show Case リンク ---- */
@@ -2221,10 +2248,10 @@ var UPCOMING = {
   allShowCaseHref: 'events.html',
   events: [
     {
-      name: 'NINJA GAMES<br>NAGOYA',
-      date: '7-9 AUG',
-      venue: '愛知県名古屋市 / 未定',
-      image: 'assets/event-nagoya.jpg',
+      name: 'NINJA GAMES<br>ECOPA',
+      date: '7-8 NOV',
+      venue: '静岡県袋井市 / ECOPA',
+      image: 'assets/event-ecopa-nov.jpg',
       href: 'events.html'
     },
     {
@@ -2232,7 +2259,9 @@ var UPCOMING = {
       date: '12-13 SEP',
       venue: '静岡県袋井市 / エコパスタジアム',
       image: 'assets/event-ecopa.jpg',
-      href: 'events.html'
+      href: 'events.html',
+      /* 現時点で確定しているショーケースは1件のみのため、日付・開催地は伏せてComing Soon表示にする */
+      comingSoon: true
     }
   ]
 };
@@ -2251,9 +2280,17 @@ var UPCOMING = {
                     .replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  /* ▼ ギャラリーがまだ揃っていないので、カードタップでPast Showcaseに飛ばないよう一時的に無効化している。
+     ギャラリーを追加し終えたら true に戻せばまたリンクするようになる。 */
+  var CARDS_LINK_TO_SHOWCASE = false;
+
   function cardHtml(evt, positionClass){
+    var comingSoon = !!evt.comingSoon;
+    var tag = CARDS_LINK_TO_SHOWCASE ? 'a' : 'div';
+    var hrefAttr = CARDS_LINK_TO_SHOWCASE ? ' href="' + escapeAttr(evt.href) + '"' : '';
+    var disabledClass = CARDS_LINK_TO_SHOWCASE ? '' : ' event-card--disabled';
     return '' +
-      '<a class="event-card ' + positionClass + '" href="' + escapeAttr(evt.href) + '">' +
+      '<' + tag + ' class="event-card ' + positionClass + (comingSoon ? ' event-card--coming-soon' : '') + disabledClass + '"' + hrefAttr + '>' +
         '<img class="event-card-photo" src="' + escapeAttr(evt.image) + '" alt="" loading="lazy">' +
         '<span class="event-card-veil"></span>' +
         '<span class="event-badge-logo">' +
@@ -2261,12 +2298,14 @@ var UPCOMING = {
             '<use href="#ninjaLogoWhiteSymbol"></use>' +
           '</svg>' +
         '</span>' +
-        '<span class="event-badge-date">' + evt.date + '</span>' +
-        '<div class="event-card-info">' +
-          '<h3 class="event-card-name">' + evt.name + '</h3>' +
-          '<p class="event-card-venue">' + PIN_ICON + '<span>' + evt.venue + '</span></p>' +
-        '</div>' +
-      '</a>';
+        (comingSoon ? '' : '<span class="event-badge-date">' + evt.date + '</span>') +
+        (comingSoon ? '<span class="event-card-comingsoon">Coming Soon</span>' : '') +
+        (comingSoon ? '' :
+          '<div class="event-card-info">' +
+            '<h3 class="event-card-name">' + evt.name + '</h3>' +
+            '<p class="event-card-venue">' + PIN_ICON + '<span>' + evt.venue + '</span></p>' +
+          '</div>') +
+      '</' + tag + '>';
   }
 
   var copyHtml =
